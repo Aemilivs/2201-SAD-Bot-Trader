@@ -17,3 +17,9 @@ This project targets Python 3.10.
 * It's the merger's responsibility to be reasonably convinced that the code is working
 * Request reviews early into the process, so that proper allocations can be made
 * [Disagree and Commit](https://en.wikipedia.org/wiki/Disagree_and_commit)
+
+## Commits
+
+* Commits are to be prefixed with `Add`, `Chg` or `Del`
+* Commits are to be written in imperative mood (imagine there's an exclamation mark at
+  the end of your commit message)
