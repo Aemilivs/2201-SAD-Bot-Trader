@@ -1,26 +1,31 @@
-import datetime
+from datetime import datetime, timezone
 from kink import inject
 from API.trade_trees.dbo.trade_tree_root import TradeTreeRoot
 from API.trade_trees.dto.trade_tree_dto_root import TradeTreeRootDTO
 
+# Design notes:
+# Layer purposed for handling communication API and the database.
 @inject()
 class TradeTreeRepository:
     def __init__(self, configuration, db) -> None:
         self._configuration = configuration
         self.db = db
         self.db.connect()
+        self.db.create_tables([TradeTreeRoot])
 
-    def get_trade_trees(self):
-        return TradeTreeRoot.select()
-    
-    def get_trade_tree(self, id):
-        return TradeTreeRoot.select().where(TradeTreeRoot.id == id)
-
-    def post_trade_tree(self, dto:TradeTreeRootDTO):
-        TradeTreeRoot.create(
-            createdAt = datetime.datetime.now(),
-            updatedAt = datetime.datetime.now()
+    def create_trade_tree(self, dto:TradeTreeRootDTO):
+        return TradeTreeRoot.create(
+            createdAt = datetime.utcnow(),
+            updatedAt = datetime.utcnow()
         ).save()
 
-    def initialize_database(self):
-        self.db.create_tables([TradeTreeRoot])
+    def read_trade_tree(self, id):
+        return TradeTreeRoot.select().where(TradeTreeRoot.id == id)
+
+    def update_trade_tree(self, dto:TradeTreeRootDTO):
+        return TradeTreeRoot.update(
+            updatedAt = datetime.utcnow()
+        ).where(TradeTreeRoot.id == dto.id).execute()
+
+    def delete_trade_tree(self, id):
+        return TradeTreeRoot.delete().where(TradeTreeRoot.id == id).execute()
