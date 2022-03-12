@@ -11,6 +11,8 @@ class TradeTreeRepository:
         self._configuration = configuration
         self.db = db
         self.db.connect()
+    
+    def initialize_trade_tree_table(self):
         self.db.create_tables([TradeTreeRoot])
 
     def create_trade_tree(self, dto:TradeTreeRootDTO):

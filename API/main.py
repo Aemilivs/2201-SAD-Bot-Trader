@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from .health.controllers.health_controller import health_blueprint
 from .trade_trees.controllers.trade_trees_controller import TradeTreesController
