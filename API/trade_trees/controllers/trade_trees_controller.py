@@ -16,6 +16,11 @@ class TradeTreesController():
 
     def define_routes(self):
         blueprint = Blueprint('trade_tree', __name__)
+
+        @blueprint.route('/api/trade_tree/initialize', methods=['GET'])
+        def initialize_trade_tree_table():
+            self.service.initialize_trade_tree_table()
+            return flask.jsonify({"result": True}), 200
         
         @blueprint.route('/api/trade_tree/<id>', methods=['GET'])
         def get_trade_tree(id):
@@ -27,6 +32,7 @@ class TradeTreesController():
                 # TODO: Replace with a proper method designed for API response 
                 return abort(404)
 
+            # TODO: Introduce a mapping of DBO into DTO in order to decouple database definition from a user contract.
             raw = model_to_dict(result[0])
             return flask.jsonify(raw), 200
         
@@ -34,16 +40,17 @@ class TradeTreesController():
         def post_trade_tree():
             # TODO: Introduce authorization.
             # TODO: Introduce validation.
+            # TODO: Introduce a mapping of DTO into DBO in order to decouple database definition from a user contract.
             result = self.service.post_trade_tree(TradeTreeRootDTO())
 
-            return flask.jsonify({"result": result}), 200
+            return flask.jsonify({"result": result}), 201
 
         @blueprint.route('/api/trade_tree', methods=['PUT'])
         def put_trade_tree():
             # TODO: Introduce authorization.
             # TODO: Introduce validation.
+            # TODO: Introduce a mapping of DTO into DBO in order to decouple database definition from a user contract.
             payload = request.get_json()
-
             self.service.put_trade_tree(TradeTreeRootDTO(payload['id']))
             return flask.jsonify({"result": True}), 200
         
@@ -52,7 +59,7 @@ class TradeTreesController():
             # TODO: Introduce authorization.
             # TODO: Introduce validation.
 
-            self.service.delete_trade_tree(id)
-            return flask.jsonify({"result": True}), 200
+            result = self.service.delete_trade_tree(id)
+            return flask.jsonify({"result": result}), 200
 
         return blueprint
