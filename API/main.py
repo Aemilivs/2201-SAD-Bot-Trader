@@ -7,4 +7,5 @@ app.config["DEBUG"] = True
 app.register_blueprint(health_blueprint)
 app.register_blueprint(trade_trees_blueprint)
 
-app.run()
+if __name__ == "__main__":
+    app.run()
