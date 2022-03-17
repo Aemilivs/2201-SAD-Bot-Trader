@@ -1,6 +1,6 @@
 from flask import Flask
-from health.controllers.health_controller import health_blueprint
-from trade_trees.controllers.trade_trees_controller import trade_trees_blueprint
+from .health.controllers.health_controller import health_blueprint
+from .trade_trees.controllers.trade_trees_controller import trade_trees_blueprint
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
