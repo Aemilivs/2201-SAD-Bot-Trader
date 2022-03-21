@@ -10,7 +10,7 @@ git clone https://github.com/Aemilivs/2201-SAD-Bot-Trader.git 2201-SAD-Bot-Trade
 python3 -m venv venv
 source venv/bin/activate
 pip3 install -r API/requirements.txt
-source run.sh
+source API/run.sh
 ```
 
 Consequent runs can be performed by executing `flask run`
