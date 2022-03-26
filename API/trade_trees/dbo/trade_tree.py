@@ -1,0 +1,33 @@
+from operator import index
+import uuid
+from peewee import UUIDField, TimestampField, CharField, BooleanField, ForeignKeyField, IntegerField, BooleanField, TextField
+from common.db_schema import BaseModel
+
+# Design notes:
+# Layer purposed for definiton of an object representation in the database.
+# TODO Introduce a valid child/branch hierarchy to the root.
+class TradeTreeRoot(BaseModel):
+    id = UUIDField(primary_key=True, default=uuid.uuid4)
+    title = CharField(max_length=100, null=False, index=False)
+    isActive = BooleanField(null=False, index=False)
+    createdAt = TimestampField(null=False, index=False)
+    updatedAt = TimestampField(null=False, index=False)
+    # child = ForeignKeyField(TradeTreeBranch, backref='child')
+
+class TradeTreeSchemaDiscriminator(BaseModel):
+    id = UUIDField(primary_key=True, default=uuid.uuid4)
+    schemaPath = TextField(null=False, index=False)
+
+class TradeTreeBranch(BaseModel):
+    id = UUIDField(primary_key=True, default=uuid.uuid4)
+    discriminator = CharField(max_length=10)
+    parent = ForeignKeyField('self', backref='parent', null=True)
+    # TODO Make root an indexed field to optimize branch building process.
+    root = ForeignKeyField(TradeTreeRoot, backref='root')
+    schema = ForeignKeyField(TradeTreeSchemaDiscriminator, backref='schema', null=True)
+
+class TradeTreeOutcome(BaseModel):
+    id = UUIDField(primary_key=True, default=uuid.uuid4)
+    operand = IntegerField()
+    target = TextField()
+    root = ForeignKeyField(TradeTreeRoot)
