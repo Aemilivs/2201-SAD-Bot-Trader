@@ -10,3 +10,4 @@ class TradeTreeRootParser(reqparse.RequestParser):
         self.add_argument('title', help='Title of the trade tree.', location='json')
         self.add_argument('is_active', type=inputs.boolean, location='json')
         self.add_argument('child', type=dict, location='json')
+        self.add_argument('outcomes', type=dict,  action='append', location='json')

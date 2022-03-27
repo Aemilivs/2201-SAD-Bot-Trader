@@ -29,6 +29,9 @@ class TradeTreeService():
         root.created_at = datetime.utcnow()
         root.updated_at = datetime.utcnow()
 
+        for outcome in root["outcomes"]:
+            outcome["id"] = uuid.uuid4()
+
         # Introduce the root into the database.
         self.repository.create_trade_tree(root)
 
@@ -65,7 +68,8 @@ class TradeTreeService():
             "isActive": payload.json["isActive"],
             "child": inflated_branch,
             "createdAt": payload.json["createdAt"],
-            "updatedAt": payload.json["updatedAt"]
+            "updatedAt": payload.json["updatedAt"],
+            "outcomes": payload.json["tradetreeoutcome_set"]
         }
     
     def put_trade_tree(self, entity: TradeTreeRoot):

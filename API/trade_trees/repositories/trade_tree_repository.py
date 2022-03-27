@@ -14,6 +14,7 @@ class TradeTreeRepository:
         self.db.create_tables([TradeTreeOutcome, TradeTreeRoot, TradeTreeBranch])
 
     def create_trade_tree(self, root:TradeTreeRoot):
+
         # TODO Introduce some meaningful return value.
         rootResult = TradeTreeRoot.create(
             id = root.id,
@@ -24,6 +25,20 @@ class TradeTreeRepository:
             child = root.child.id
         )
 
+        outcomes = []
+
+        for outcome in root["outcomes"]:
+            entity = TradeTreeOutcome(
+                id = outcome["id"],
+                operation = outcome["operation"],
+                operand = outcome["operand"],
+                target = outcome["target"],
+                root = root.id
+            )
+            outcomes.append(entity)
+
+        outcomesResult = TradeTreeOutcome.bulk_create(outcomes)
+
         return True
 
     def create_branches(self, branches):
@@ -33,7 +48,7 @@ class TradeTreeRepository:
 
     def read_trade_tree(self, id):
         # TODO Make this query return a valid trade tree (with a children/branch hierarchy).
-        return TradeTreeRoot.select().join(TradeTreeBranch, on= TradeTreeBranch.root == TradeTreeRoot.id).where(TradeTreeRoot.id == id)
+        return TradeTreeRoot.select().join(TradeTreeBranch, on= TradeTreeBranch.root == TradeTreeRoot.id).join(TradeTreeOutcome, on = TradeTreeBranch.root == TradeTreeOutcome.root).where(TradeTreeRoot.id == id)
 
     def read_trade_tree_branches(self, id):
         return TradeTreeBranch.select().where(TradeTreeBranch.root == id)

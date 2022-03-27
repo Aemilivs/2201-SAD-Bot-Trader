@@ -4,7 +4,6 @@ from flask import Blueprint, abort, request
 import flask
 from kink import inject
 from playhouse.shortcuts import model_to_dict
-from trade_trees.dto.trade_tree_put_parser import TradeTreePutParser
 from trade_trees.services.trade_tree_service import TradeTreeService
 from trade_trees.dto.trade_tree_parser import TradeTreeParser
 
