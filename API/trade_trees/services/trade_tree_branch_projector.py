@@ -59,3 +59,28 @@ class TradeTreeBranchProjector():
         results.append(branch)
 
         return results
+
+    def inflate_branches(self, branches):
+        root_branch = list(filter(lambda it: it["parent"] == None, branches))[0]
+
+        self.inflate_branch(root_branch, branches)
+
+        return root_branch
+
+    def inflate_branch(self, branch, branches):
+        if(not "children" in branch):
+            return branch
+
+        for child in branch["children"]:
+            # Hello, N^2
+            targets = branch = list(filter(lambda it: it["id"] == child["id"], branches))
+
+            # TODO Introduce a proper error message.
+            if(len(targets) != 1):
+                return None
+
+            child["children"] = targets[0]["children"]
+
+            self.inflate_branch(child, branches)
+
+        return branch

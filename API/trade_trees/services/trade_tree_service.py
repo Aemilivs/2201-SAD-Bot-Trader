@@ -1,8 +1,10 @@
 from datetime import datetime
 from functools import reduce
 import json
+from playhouse.shortcuts import model_to_dict
 from types import SimpleNamespace
 import uuid
+import flask
 from kink import inject
 
 from trade_trees.dbo.trade_tree import TradeTreeRoot
@@ -44,7 +46,27 @@ class TradeTreeService():
         return root
 
     def get_trade_tree(self, id):
-        return self.repository.read_trade_tree(id)
+        result = self.repository.read_trade_tree(id)
+
+        if (len(result) < 1):
+            # TODO: Replace with a proper method designed for API response 
+            return flask.jsonify({"error": "Not found"}), 404
+
+        raw = model_to_dict(result[0], backrefs=True)
+        payload = flask.jsonify(raw)
+
+        projector = TradeTreeBranchProjector()
+        deflated_branches = payload.json["root"]
+        inflated_branch = projector.inflate_branches(deflated_branches)
+        payload.json["root"] = inflated_branch
+        return {
+            "id": payload.json["id"],
+            "title": payload.json["title"],
+            "isActive": payload.json["isActive"],
+            "child": inflated_branch,
+            "createdAt": payload.json["createdAt"],
+            "updatedAt": payload.json["updatedAt"]
+        }
     
     def put_trade_tree(self, entity: TradeTreeRoot):
         entity.updated_at = datetime.utcnow()

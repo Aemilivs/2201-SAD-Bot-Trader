@@ -31,14 +31,7 @@ class TradeTreesController():
             # TODO: Introduce validation.
             # TODO: Introduce authorization.
             result = self.service.get_trade_tree(id)
-
-            if (len(result) < 1):
-                # TODO: Replace with a proper method designed for API response 
-                return flask.jsonify({"error": "Not found"}), 404
-
-            # TODO: Introduce a mapping of DBO into DTO in order to decouple database definition from a user contract.
-            raw = model_to_dict(result[0], backrefs=True)
-            return flask.jsonify(raw), 200
+            return flask.jsonify(result), 200
         
         @blueprint.route('/api/trade_tree', methods=['POST'])
         def post_trade_tree():
