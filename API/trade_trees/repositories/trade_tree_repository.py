@@ -11,29 +11,32 @@ class TradeTreeRepository:
         self.db = db
         self.db.connect()
         # TODO: Eventually come up with a resolution of whether we should call it or not.
-        self.db.create_tables([TradeTreeSchemaDiscriminator, TradeTreeOutcome, TradeTreeRoot, TradeTreeBranch])
-    
-    def create_trade_tree(self, entity:TradeTreeRoot):
+        self.db.create_tables([TradeTreeOutcome, TradeTreeRoot, TradeTreeBranch])
+
+    def create_trade_tree(self, root:TradeTreeRoot):
         # TODO Introduce some meaningful return value.
         rootResult = TradeTreeRoot.create(
-            id = entity.id,
-            title = entity.title,
-            isActive = entity.is_active,
-            createdAt = entity.created_at,
-            updatedAt = entity.updated_at
+            id = root.id,
+            title = root.title,
+            isActive = root.is_active,
+            createdAt = root.created_at,
+            updatedAt = root.updated_at,
+            child = root.child.id
         )
 
-        childResult = TradeTreeBranch.create(
-            id = entity.child.id,
-            root = entity.id,
-            discriminator = entity.child.discriminator
-        )
+        return True
 
-        return 1
+    def create_branches(self, branches):
+        branchesResult = TradeTreeBranch.bulk_create(branches)
+
+        return True
 
     def read_trade_tree(self, id):
         # TODO Make this query return a valid trade tree (with a children/branch hierarchy).
-        return TradeTreeRoot.select().join(TradeTreeBranch).where(TradeTreeBranch.root == id)
+        return TradeTreeRoot.select().join(TradeTreeBranch, on= TradeTreeBranch.root == TradeTreeRoot.id).where(TradeTreeRoot.id == id)
+
+    def read_trade_tree_branches(self, id):
+        return TradeTreeBranch.select().where(TradeTreeBranch.root == id)
 
     def update_trade_tree(self, entity:TradeTreeRoot):
         return TradeTreeRoot.update(
@@ -44,3 +47,6 @@ class TradeTreeRepository:
 
     def delete_trade_tree(self, id):
         return TradeTreeRoot.delete().where(TradeTreeRoot.id == id).execute()
+
+    def delete_trade_tree_branches(self, id):
+        return TradeTreeBranch.delete().where(TradeTreeBranch.root == id).execute()

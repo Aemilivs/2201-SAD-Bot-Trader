@@ -14,17 +14,20 @@ class TradeTreeRoot(BaseModel):
     updatedAt = TimestampField(null=False, index=False)
     # child = ForeignKeyField(TradeTreeBranch, backref='child')
 
-class TradeTreeSchemaDiscriminator(BaseModel):
-    id = UUIDField(primary_key=True, default=uuid.uuid4)
-    schemaPath = TextField(null=False, index=False)
+# TODO Introduce a separated class for schema branches.
+# class TradeTreeSchemaDiscriminator(BaseModel):
+#     id = UUIDField(primary_key=True, default=uuid.uuid4)
+#     schemaPath = TextField(null=False, index=False)
 
 class TradeTreeBranch(BaseModel):
-    id = UUIDField(primary_key=True, default=uuid.uuid4)
+    id = UUIDField(primary_key=True)
     discriminator = CharField(max_length=10)
-    parent = ForeignKeyField('self', backref='parent', null=True)
+    parent = ForeignKeyField('self', backref='children', null=True)
     # TODO Make root an indexed field to optimize branch building process.
     root = ForeignKeyField(TradeTreeRoot, backref='root')
-    schema = ForeignKeyField(TradeTreeSchemaDiscriminator, backref='schema', null=True)
+    schema_path = CharField(max_length=100, null=True)
+    operation = CharField(max_length=100, null=True)
+    discriminant = CharField(max_length=100, null=True)
 
 class TradeTreeOutcome(BaseModel):
     id = UUIDField(primary_key=True, default=uuid.uuid4)

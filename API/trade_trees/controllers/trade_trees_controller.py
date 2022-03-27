@@ -37,7 +37,7 @@ class TradeTreesController():
                 return flask.jsonify({"error": "Not found"}), 404
 
             # TODO: Introduce a mapping of DBO into DTO in order to decouple database definition from a user contract.
-            raw = model_to_dict(result[0])
+            raw = model_to_dict(result[0], backrefs=True)
             return flask.jsonify(raw), 200
         
         @blueprint.route('/api/trade_tree', methods=['POST'])
