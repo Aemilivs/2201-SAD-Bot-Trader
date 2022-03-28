@@ -26,7 +26,7 @@ class tradeTreeEvaluator():
         return False
 
     def evaluate_branch(self, branch):
-        discriminator = branch["distcriminator"]
+        discriminator = branch["discriminator"]
 
         if discriminator.upper() == "AND":
             return self.evaluate_conjuction(branch)
@@ -74,9 +74,6 @@ class tradeTreeEvaluator():
 
     # Logical operator NOT
     def evaluate_negation(self, branch):
-        def evaluate(left, right):
-            return left or right
-
         children = branch["children"]
 
         if len(children) != 1:
@@ -87,4 +84,14 @@ class tradeTreeEvaluator():
         return not result
     
     def evaluate_schema(self, branch):
-        pass
+        schema_path = branch["schema_path"]
+        discriminant = branch["discriminant"]
+        operation = branch["operation"]
+
+        # Placeholder
+        value = 1
+
+        if operation.upper() == "NUMERICMOREOREQUALCOMPARISON":
+            return value >= float(discriminant)
+
+        return False
