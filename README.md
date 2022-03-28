@@ -6,8 +6,8 @@ during the Summer Semester of 2022 as part of the "Secure Application Developmen
 ## Running Bot Trader's API
 
 ```bash
-git clone https://github.com/Aemilivs/2201-SAD-Bot-Trader.git 2201-SAD-Bot-Trader && cd $_
-python3 -m venv venv
+git clone --recursive https://github.com/Aemilivs/2201-SAD-Bot-Trader.git 2201-SAD-Bot-Trader && cd $_
+python3.10 -m venv venv
 source venv/bin/activate
 pip3 install -r API/requirements.txt
 source API/run.sh
@@ -19,12 +19,12 @@ Consequent runs can be performed by executing `flask run`
 
 ```bash
 git clone --recursive https://github.com/Aemilivs/2201-SAD-Bot-Trader.git 2201-SAD-Bot-Trader && cd $_
-python3 -m venv venv
+python3.10 -m venv venv
 source venv/bin/activate
 pip3 install -r GUI/requirements.txt
-python3 manage.py makemigrations
-python3 manage.py migrate
-python3 manage.py runserver
+python3.10 manage.py makemigrations
+python3.10 manage.py migrate
+python3.10 manage.py runserver
 ```
 
 Consequent runs can be performed by executing
