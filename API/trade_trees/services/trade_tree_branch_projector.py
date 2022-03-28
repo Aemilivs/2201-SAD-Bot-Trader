@@ -1,7 +1,4 @@
-from functools import reduce
-
-from trade_trees.dbo.trade_tree import TradeTreeBranch
-
+from API.trade_trees.dbo.trade_tree import TradeTreeBranch
 
 class TradeTreeBranchProjector():
     # Deflate the tree structure into a list of 

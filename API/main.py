@@ -1,8 +1,7 @@
-import os
 from flask import Flask
-from flask_restful import Api, Resource
-from .health.controllers.health_controller import health_blueprint
-from .trade_trees.controllers.trade_trees_controller import TradeTreesController
+from flask_restful import Api
+from API.health.controllers.health_controller import health_blueprint
+from API.trade_trees.controllers.trade_trees_controller import TradeTreesController
 
 app = Flask(__name__)
 app.config["DEBUG"] = True

@@ -1,14 +1,11 @@
 from datetime import datetime
-from functools import reduce
-import json
 from playhouse.shortcuts import model_to_dict
-from types import SimpleNamespace
 import uuid
 import flask
 from kink import inject
 
-from trade_trees.dbo.trade_tree import TradeTreeRoot
-from trade_trees.services.trade_tree_branch_projector import TradeTreeBranchProjector
+from API.trade_trees.dbo.trade_tree import TradeTreeRoot
+from API.trade_trees.services.trade_tree_branch_projector import TradeTreeBranchProjector
 
 # Design notes:
 # Layer purposed for handling business logic.
@@ -17,6 +14,7 @@ class TradeTreeService():
     def __init__(self, configuration, trade_tree_repository):
         self.configuration = configuration
         self.repository = trade_tree_repository
+        self.projector = TradeTreeBranchProjector()
 
     def initialize_trade_tree_table(self):
         self.repository.initialize_trade_tree_table()
@@ -39,9 +37,8 @@ class TradeTreeService():
         self.repository.delete_trade_tree_branches(root.id)
 
         # Flatten the tree structure in order to store it in the database.
-        projector = TradeTreeBranchProjector()
-        folded_branches = projector.fold_branches(root.child, root.id)
-        deflated_branches = projector.deflate_branches(folded_branches)
+        folded_branches = self.projector.fold_branches(root.child, root.id)
+        deflated_branches = self.projector.deflate_branches(folded_branches)
         # Introduce the branches into the database.
         self.repository.create_branches(deflated_branches)
 
@@ -58,9 +55,8 @@ class TradeTreeService():
         raw = model_to_dict(result[0], backrefs=True)
         payload = flask.jsonify(raw)
 
-        projector = TradeTreeBranchProjector()
         deflated_branches = payload.json["root"]
-        inflated_branch = projector.inflate_branches(deflated_branches)
+        inflated_branch = self.projector.inflate_branches(deflated_branches)
         payload.json["root"] = inflated_branch
         return {
             "id": payload.json["id"],
@@ -72,10 +68,21 @@ class TradeTreeService():
             "outcomes": payload.json["tradetreeoutcome_set"]
         }
     
-    def put_trade_tree(self, entity: TradeTreeRoot):
-        entity.updated_at = datetime.utcnow()
-        self.repository.update_trade_tree(entity) > 0
-        return entity
+    def put_trade_tree(self, root: TradeTreeRoot):
+        root.updated_at = datetime.utcnow()
+        self.repository.update_trade_tree(root)
+
+        # Delete all the existing branches associated with the given trade tree root.
+        self.repository.delete_trade_tree_branches(root.id)
+
+        # Flatten the tree structure in order to store it in the database.
+        folded_branches = self.projector.fold_branches(root.child, root.id)
+        deflated_branches = self.projector.deflate_branches(folded_branches)
+
+        # Introduce the branches into the database.
+        self.repository.create_branches(deflated_branches)
+
+        return root
 
     def delete_trade_tree(self, id):
         return self.repository.delete_trade_tree(id)

@@ -1,7 +1,7 @@
 from operator import index
 import uuid
 from peewee import UUIDField, TimestampField, CharField, BooleanField, ForeignKeyField, IntegerField, BooleanField, TextField
-from common.db_schema import BaseModel
+from API.common.db_schema import BaseModel
 
 # Design notes:
 # Layer purposed for definiton of an object representation in the database.
@@ -12,7 +12,6 @@ class TradeTreeRoot(BaseModel):
     isActive = BooleanField(null=False, index=False)
     createdAt = TimestampField(null=False, index=False)
     updatedAt = TimestampField(null=False, index=False)
-    # child = ForeignKeyField(TradeTreeBranch, backref='child')
 
 # TODO Introduce a separated class for schema branches.
 # class TradeTreeSchemaDiscriminator(BaseModel):
@@ -31,6 +30,7 @@ class TradeTreeBranch(BaseModel):
 
 class TradeTreeOutcome(BaseModel):
     id = UUIDField(primary_key=True, default=uuid.uuid4)
+    operation = CharField(max_length=25)
     operand = IntegerField()
     target = TextField()
     root = ForeignKeyField(TradeTreeRoot)

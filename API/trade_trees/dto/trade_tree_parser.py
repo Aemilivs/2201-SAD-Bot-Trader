@@ -1,9 +1,8 @@
 # Design notes:
 # Layer purposed for definiton of a contract between the user and API.
 import uuid
-from trade_trees.dto.trade_tree_branch_parser import TradeTreeBranchParser
-from trade_trees.dto.trade_tree_outcome_parser import TradeTreeOutcomeParser
-from trade_trees.dto.trade_tree_root_parser import TradeTreeRootParser
+from API.trade_trees.dto.trade_tree_branch_parser import TradeTreeBranchParser
+from API.trade_trees.dto.trade_tree_root_parser import TradeTreeRootParser
 
 class FakeRequest(dict):
         def __setattr__(self, name, value):
@@ -13,7 +12,6 @@ class TradeTreeParser():
     def __init__(self) -> None:
         self.rootParser = TradeTreeRootParser()
         self.branchParser = TradeTreeBranchParser()
-        self.outcomeParser = TradeTreeOutcomeParser()
 
     def parse_args(self):
         root = self.rootParser.parse_args()

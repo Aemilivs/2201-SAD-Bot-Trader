@@ -5,7 +5,7 @@ import configparser
 
 def bootstrap_di() -> None:
     config = configparser.ConfigParser()
-    config.read('configuration.ini')
+    config.read('API/configuration.ini')
     di['configuration'] = config
     databaseName = config['DEFAULT']['DatabaseName']
     di['db'] = SqliteDatabase(databaseName + '.sqlite')
