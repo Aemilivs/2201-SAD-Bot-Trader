@@ -3,5 +3,5 @@
 pycodestyle==2.8.0
 autopep8==1.6.0
 Flask==2.0.3
-kink>=0.5.1
 peewee==3.14.10
+kink==0.6.2
