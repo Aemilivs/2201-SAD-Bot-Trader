@@ -1,10 +1,9 @@
-from flask import Blueprint, abort, request
-from kink import inject
-from playhouse.shortcuts import model_to_dict
+from flask import Blueprint
 import flask
-
-from API.trade_trees.dto.trade_tree_dto_root import TradeTreeRootDTO
+from kink import inject
 from API.trade_trees.services.trade_tree_service import TradeTreeService
+from API.trade_trees.dto.trade_tree_parser import TradeTreeParser
+
 
 # Design notes:
 # Layer purposed for handling communication between client and API.
@@ -13,6 +12,7 @@ class TradeTreesController():
     def __init__(self, trade_tree_service: TradeTreeService):
         self.service = trade_tree_service
         self.blueprint = self.define_routes()
+        self.parser = TradeTreeParser()
 
     def define_routes(self):
         blueprint = Blueprint('trade_tree', __name__)
@@ -27,32 +27,25 @@ class TradeTreesController():
             # TODO: Introduce validation.
             # TODO: Introduce authorization.
             result = self.service.get_trade_tree(id)
-
-            if (len(result) < 1):
-                # TODO: Replace with a proper method designed for API response 
-                return abort(404)
-
-            # TODO: Introduce a mapping of DBO into DTO in order to decouple database definition from a user contract.
-            raw = model_to_dict(result[0])
-            return flask.jsonify(raw), 200
+            return flask.jsonify(result), 200
         
         @blueprint.route('/api/trade_tree', methods=['POST'])
         def post_trade_tree():
             # TODO: Introduce authorization.
             # TODO: Introduce validation.
             # TODO: Introduce a mapping of DTO into DBO in order to decouple database definition from a user contract.
-            result = self.service.post_trade_tree(TradeTreeRootDTO())
-
-            return flask.jsonify({"result": result}), 201
+            tree = self.parser.parse_args()
+            result = self.service.post_trade_tree(tree)
+            return flask.jsonify(result), 201
 
         @blueprint.route('/api/trade_tree', methods=['PUT'])
         def put_trade_tree():
             # TODO: Introduce authorization.
             # TODO: Introduce validation.
             # TODO: Introduce a mapping of DTO into DBO in order to decouple database definition from a user contract.
-            payload = request.get_json()
-            self.service.put_trade_tree(TradeTreeRootDTO(payload['id']))
-            return flask.jsonify({"result": True}), 200
+            tree = self.parser.parse_args()
+            result = self.service.put_trade_tree(tree)
+            return flask.jsonify(result), 204
         
         @blueprint.route('/api/trade_tree/<id>', methods=['DELETE'])
         def delete_trade_tree(id):
@@ -60,6 +53,6 @@ class TradeTreesController():
             # TODO: Introduce validation.
 
             result = self.service.delete_trade_tree(id)
-            return flask.jsonify({"result": result}), 200
+            return flask.jsonify(result=result), 200
 
         return blueprint
