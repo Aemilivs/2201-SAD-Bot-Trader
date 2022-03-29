@@ -6,7 +6,7 @@ from kink import inject
 
 from API.trade_trees.dbo.trade_tree import TradeTreeRoot
 from API.trade_trees.services.trade_tree_branch_projector import TradeTreeBranchProjector
-from API.trade_trees.services.trade_tree_evaluator import tradeTreeEvaluator
+from API.trade_trees.services.trade_tree_evaluator import TradeTreeEvaluator
 
 # Design notes:
 # Layer purposed for handling business logic.
@@ -16,7 +16,7 @@ class TradeTreeService():
         self.configuration = configuration
         self.repository = trade_tree_repository
         self.projector = TradeTreeBranchProjector()
-        self.evaluator = tradeTreeEvaluator()
+        self.evaluator = TradeTreeEvaluator()
 
     def initialize_trade_tree_table(self):
         self.repository.initialize_trade_tree_table()
@@ -91,6 +91,6 @@ class TradeTreeService():
 
     def evaluate_trade_tree(self, id):
         tree = self.get_trade_tree(id)
-        return self.evaluator(tree)
+        return self.evaluator.evaluate_tree(tree)
 
     

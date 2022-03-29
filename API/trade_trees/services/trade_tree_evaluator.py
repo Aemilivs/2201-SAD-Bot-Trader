@@ -2,7 +2,7 @@ from cgitb import reset
 from functools import reduce
 
 
-class tradeTreeEvaluator():
+class TradeTreeEvaluator():
     # TODO Inject stock API adaptors using DI.
     def __init__(self) -> None:
         pass
