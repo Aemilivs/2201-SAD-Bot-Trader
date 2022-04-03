@@ -2,7 +2,7 @@
 
 ## ADD/CHG/DEL
 
-A brief summary of the changes proposed by your PR following the syntax defined in [CONTRIB.MD](../CONTRIB.MD).
+A brief summary of the changes proposed by your PR following the syntax defined in [CONTRIB.md](../CONTRIB.md).
 
 ## Checklist
 
