@@ -131,3 +131,7 @@ API/*.sqlite
 *.sqlite
 .vscode
 .idea/*
+.gitsecret/keys/random_seed
+!*.secret
+API/trading_api/constants.py
+API/openapi.json
