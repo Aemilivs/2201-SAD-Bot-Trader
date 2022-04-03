@@ -10,6 +10,8 @@ from API.trade_trees.services.trade_tree_evaluator import TradeTreeEvaluator
 
 # Design notes:
 # Layer purposed for handling business logic.
+
+
 @inject
 class TradeTreeService():
     def __init__(self, configuration, trade_tree_repository):
@@ -20,7 +22,7 @@ class TradeTreeService():
 
     def initialize_trade_tree_table(self):
         self.repository.initialize_trade_tree_table()
-        
+
     def post_trade_tree(self, root: TradeTreeRoot):
         # TODO Validation of children:
         # 1. No branch that has no children shall have anything but schema descriminator.
@@ -35,7 +37,8 @@ class TradeTreeService():
         # Introduce the root into the database.
         self.repository.create_trade_tree(root)
 
-        # Delete all the existing branches associated with the given trade tree root.
+        # Delete all the existing branches associated with the given trade tree
+        # root.
         self.repository.delete_trade_tree_branches(root.id)
 
         # Flatten the tree structure in order to store it in the database.
@@ -51,7 +54,7 @@ class TradeTreeService():
         result = self.repository.read_trade_tree(id)
 
         if (len(result) < 1):
-            # TODO: Replace with a proper method designed for API response 
+            # TODO: Replace with a proper method designed for API response
             return flask.jsonify({"error": "Not found"}), 404
 
         raw = model_to_dict(result[0], backrefs=True)
@@ -69,12 +72,13 @@ class TradeTreeService():
             "updatedAt": payload.json["updatedAt"],
             "outcomes": payload.json["tradetreeoutcome_set"]
         }
-    
+
     def put_trade_tree(self, root: TradeTreeRoot):
         root.updated_at = datetime.utcnow()
         self.repository.update_trade_tree(root)
 
-        # Delete all the existing branches associated with the given trade tree root.
+        # Delete all the existing branches associated with the given trade tree
+        # root.
         self.repository.delete_trade_tree_branches(root.id)
 
         # Flatten the tree structure in order to store it in the database.
@@ -92,5 +96,3 @@ class TradeTreeService():
     def evaluate_trade_tree(self, id):
         tree = self.get_trade_tree(id)
         return self.evaluator.evaluate_tree(tree)
-
-    

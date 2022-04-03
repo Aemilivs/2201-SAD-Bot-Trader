@@ -6,6 +6,8 @@ from API.common.db_schema import BaseModel
 # Design notes:
 # Layer purposed for definiton of an object representation in the database.
 # TODO Introduce a valid child/branch hierarchy to the root.
+
+
 class TradeTreeRoot(BaseModel):
     id = UUIDField(primary_key=True, default=uuid.uuid4)
     title = CharField(max_length=100, null=False, index=False)
@@ -18,6 +20,7 @@ class TradeTreeRoot(BaseModel):
 #     id = UUIDField(primary_key=True, default=uuid.uuid4)
 #     schemaPath = TextField(null=False, index=False)
 
+
 class TradeTreeBranch(BaseModel):
     id = UUIDField(primary_key=True)
     discriminator = CharField(max_length=10)
@@ -27,6 +30,7 @@ class TradeTreeBranch(BaseModel):
     schema_path = CharField(max_length=100, null=True)
     operation = CharField(max_length=100, null=True)
     discriminant = CharField(max_length=100, null=True)
+
 
 class TradeTreeOutcome(BaseModel):
     id = UUIDField(primary_key=True, default=uuid.uuid4)

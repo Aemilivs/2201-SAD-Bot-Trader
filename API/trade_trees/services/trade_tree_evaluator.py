@@ -12,11 +12,11 @@ class TradeTreeEvaluator():
 
     def evaluate_tree(self, tree):
         root_branch = tree["child"]
-        
+
         result = self.evaluate_branch(root_branch)
 
         # TODO Introduce better error handling.
-        if result == None:
+        if result is None:
             raise Exception("Invalid rule tree is attempted to be processed.")
 
         if result:
@@ -39,7 +39,7 @@ class TradeTreeEvaluator():
 
         if discriminator.upper() == TradeTreeDiscriminator.NOT.name:
             return self.evaluate_negation(branch)
-        
+
         if discriminator.upper() == TradeTreeDiscriminator.SCHEMA.name:
             return self.evaluate_schema(branch)
 
@@ -55,14 +55,14 @@ class TradeTreeEvaluator():
 
         if len(children) < 1:
             return None
-        
+
         projection = map(self.evaluate_branch, children)
         results = list(projection)
         return reduce(evaluate, results)
 
     # Logical operator OR
     def evaluate_disjunction(self, branch):
-        
+
         def evaluate(left, right):
             return left or right
 
@@ -99,7 +99,7 @@ class TradeTreeEvaluator():
         rest = path[dot_index + 1:]
 
         return self.get_value(payload[next_path], rest)
-    
+
     def evaluate_schema(self, branch):
         schema_path = branch["schema_path"]
         discriminant = branch["discriminant"]
@@ -116,9 +116,9 @@ class TradeTreeEvaluator():
 
         value = self.get_value(payload, schema_path)
 
-        # TODO Replace with a better validation; 
+        # TODO Replace with a better validation;
         # Case when a payload does not contain the defined schema path.
-        if value == None:
+        if value is None:
             return False
 
         if operation.upper() == TradeTreeSchemaOperation.NUMERIC_LESS_COMPARISON.name:

@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class TradeTreeSchemaOperation(Enum):
     NUMERIC_LESS_COMPARISON = 1
     NUMERIC_LESS_OR_EQUAL_COMPARISON = 2

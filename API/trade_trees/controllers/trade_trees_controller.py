@@ -21,19 +21,20 @@ class TradeTreesController():
         def initialize_trade_tree_table():
             self.service.initialize_trade_tree_table()
             return flask.jsonify({"result": True}), 200
-        
+
         @blueprint.route('/api/trade_tree/<id>', methods=['GET'])
         def get_trade_tree(id):
             # TODO: Introduce validation.
             # TODO: Introduce authorization.
             result = self.service.get_trade_tree(id)
             return flask.jsonify(result), 200
-        
+
         @blueprint.route('/api/trade_tree', methods=['POST'])
         def post_trade_tree():
             # TODO: Introduce authorization.
             # TODO: Introduce validation.
-            # TODO: Introduce a mapping of DTO into DBO in order to decouple database definition from a user contract.
+            # TODO: Introduce a mapping of DTO into DBO in order to decouple
+            # database definition from a user contract.
             tree = self.parser.parse_args()
             result = self.service.post_trade_tree(tree)
             return flask.jsonify(result), 201
@@ -42,11 +43,12 @@ class TradeTreesController():
         def put_trade_tree():
             # TODO: Introduce authorization.
             # TODO: Introduce validation.
-            # TODO: Introduce a mapping of DTO into DBO in order to decouple database definition from a user contract.
+            # TODO: Introduce a mapping of DTO into DBO in order to decouple
+            # database definition from a user contract.
             tree = self.parser.parse_args()
             result = self.service.put_trade_tree(tree)
             return flask.jsonify(result), 204
-        
+
         @blueprint.route('/api/trade_tree/<id>', methods=['DELETE'])
         def delete_trade_tree(id):
             # TODO: Introduce authorization.

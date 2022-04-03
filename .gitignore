@@ -130,3 +130,4 @@ dmypy.json
 API/*.sqlite
 *.sqlite
 .vscode
+.idea/*

@@ -4,9 +4,11 @@ import uuid
 from API.trade_trees.dto.trade_tree_branch_parser import TradeTreeBranchParser
 from API.trade_trees.dto.trade_tree_root_parser import TradeTreeRootParser
 
+
 class FakeRequest(dict):
-        def __setattr__(self, name, value):
-            object.__setattr__(self, name, value)
+    def __setattr__(self, name, value):
+        object.__setattr__(self, name, value)
+
 
 class TradeTreeParser():
     def __init__(self) -> None:
@@ -33,13 +35,14 @@ class TradeTreeParser():
         if(len(input) == 0):
             return None
 
-        if(parent.children == None):
+        if(parent.children is None):
             parent.children = []
-        
+
         iterator = map(self.project_child, input)
         return list(iterator)
 
-    # Recursively call parse_children in order to build a proper structure of the tree.
+    # Recursively call parse_children in order to build a proper structure of
+    # the tree.
     def project_child(self, branch):
         child_request = FakeRequest()
         children = {}
