@@ -26,6 +26,8 @@ This project targets Python 3.10.
 
 ## autopep8
 
+Autopep8 fixes most of the issues reported by `pylint API/`.
+
 Formatting all .py files in the API/ can be done via:
 ```bash
 find API/ -name '*.py*' -print0 | xargs -0 autopep8 --in-place --aggressive --aggressive
