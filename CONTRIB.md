@@ -2,7 +2,7 @@
 
 <!-- * Use proper Python 3 Syntax -->
 * Follow [PEP8](https://www.python.org/dev/peps/pep-0008/) Python style conventions
-* Conform to the following formatting and documentation standards 
+* Conform to the following formatting and documentation standards
 * Include tests for your code
 * Minimize module dependencies
 * Ensure that your code is readable
@@ -23,3 +23,16 @@ This project targets Python 3.10.
 * Commits are to be prefixed with `Add`, `Chg` or `Del`
 * Commits are to be written in imperative mood (imagine there's an exclamation mark at
   the end of your commit message)
+
+## autopep8
+
+Formatting all .py files in the API/ can be done via:
+```bash
+find API/ -name '*.py*' -print0 | xargs -0 autopep8 --in-place --aggressive --aggressive
+```
+
+Formatting a singular file:
+
+```bash
+autopep8 --in-place --aggressive --aggressive ${file:-__init__.py}
+```
