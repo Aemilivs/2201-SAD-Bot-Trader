@@ -3,6 +3,7 @@ from kink import di
 from peewee import SqliteDatabase
 import configparser
 
+
 def bootstrap_di() -> None:
     config = configparser.ConfigParser()
     config.read('API/configuration.ini')
