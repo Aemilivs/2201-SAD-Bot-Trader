@@ -55,4 +55,9 @@ class TradeTreesController():
             result = self.service.delete_trade_tree(id)
             return flask.jsonify(result=result), 200
 
+        @blueprint.route('/api/trade_tree/evaluate/<id>', methods=['GET'])
+        def evaluate_trade_tree(id):
+            result = self.service.evaluate_trade_tree(id)
+            return flask.jsonify(result=result), 200
+
         return blueprint
