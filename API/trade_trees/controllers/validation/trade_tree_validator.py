@@ -3,19 +3,20 @@ from schema import Schema, And, Use, Optional, SchemaError
 from API.trade_trees.dbo.trade_tree_discriminator import TradeTreeDiscriminator
 from API.trade_trees.dbo.trade_tree_schema_operation import TradeTreeSchemaOperation
 
+
 class TradeTreeValidator():
     def __init__(self):
 
         definitions = {
             'title': And(
-                str, 
+                str,
                 And(
                     Use(
-                        str, 
-                        error = "title have to be a string."
-                    ), 
+                        str,
+                        error="title have to be a string."
+                    ),
                     lambda it: len(it) >= 4 and len(it) <= 50,
-                    error = "title have to be from 4 to 50 characters long."
+                    error="title have to be from 4 to 50 characters long."
                 )
             ),
             'child': And(
@@ -25,7 +26,7 @@ class TradeTreeValidator():
             'outcomes': And(
                 Use(list),
                 lambda it: len(it) >= 1,
-                error = "At least one outcome have to exist."
+                error="At least one outcome have to exist."
             )
         }
 
@@ -54,21 +55,25 @@ class TradeTreeValidator():
             if(children_count > 1):
                 pass
             else:
-                raise SchemaError("One of branches contains `and` discriminator with not enough children.")
+                raise SchemaError(
+                    "One of branches contains `and` discriminator with not enough children.")
 
         if discriminator.upper() == TradeTreeDiscriminator.OR.name:
             if(children_count > 1):
                 pass
             else:
-                raise SchemaError("One of branches contains `or` discriminator with not enough children.")
+                raise SchemaError(
+                    "One of branches contains `or` discriminator with not enough children.")
 
         if discriminator.upper() == TradeTreeDiscriminator.NOT.name:
             if(children_count > 1):
-                raise SchemaError("One of branches contains `not` discriminator with too many children.")
+                raise SchemaError(
+                    "One of branches contains `not` discriminator with too many children.")
 
         if discriminator.upper() == TradeTreeDiscriminator.SCHEMA.name:
             if(children_count > 0):
-                raise SchemaError("One of branches contains `schema` discriminator with children.")
+                raise SchemaError(
+                    "One of branches contains `schema` discriminator with children.")
 
         for child in children:
             self.validate_child(child)
@@ -90,7 +95,9 @@ class TradeTreeValidator():
         if discriminator.upper() == TradeTreeDiscriminator.SCHEMA.name:
             return self.validate_operation(branch)
 
-        raise SchemaError("One of branches contains invalid discriminator `{discriminator}`.".format(discriminator=discriminator))
+        raise SchemaError(
+            "One of branches contains invalid discriminator `{discriminator}`.".format(
+                discriminator=discriminator))
 
     def validate_operation(self, branch):
         operation = branch["operation"]
@@ -122,5 +129,6 @@ class TradeTreeValidator():
         if operation.upper() == TradeTreeSchemaOperation.STRING_ENDS_WITH_COMPARISON.name:
             return True
 
-        raise SchemaError("One of schema branches contains invalid operation `{operation}`.".format(operation=operation))
-
+        raise SchemaError(
+            "One of schema branches contains invalid operation `{operation}`.".format(
+                operation=operation))

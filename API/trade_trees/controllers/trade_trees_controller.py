@@ -43,7 +43,7 @@ class TradeTreesController():
                     "error_message": exception.code
                 }
                 return flask.jsonify(result), 400
-            
+
             result = self.service.post_trade_tree(tree)
             return flask.jsonify(result), 201
 
