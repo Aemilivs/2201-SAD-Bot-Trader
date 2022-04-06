@@ -15,7 +15,6 @@ class Adapter:
             "weekly": "TIME_SERIES_WEEKLY",
             "monthly": "TIME_SERIES_MONTHLY"
         }
-
         if self.frequency not in frequencies:
             raise Exception("Wrong frequency. Use 'daily', 'monthly' or 'weekly' ")
 
