@@ -1,6 +1,7 @@
 """This module is the main runtime of the SAD Bot Trader API"""
 from flask import Flask
 from flask_restful import Api
+from .authentication.my_resource import PrivateResource
 from .health.controllers.health_controller import health_blueprint
 from .trade_trees.controllers.trade_trees_controller import TradeTreesController
 
@@ -11,4 +12,4 @@ app.register_blueprint(health_blueprint)
 app.register_blueprint(TradeTreesController().blueprint)
 
 if __name__ == "__main__":
-    Api(app.run())
+    Api(app.run()).add_resource(PrivateResource, '/private')
