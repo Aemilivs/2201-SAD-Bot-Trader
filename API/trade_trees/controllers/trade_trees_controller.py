@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request
 import flask
 from kink import inject
 from schema import SchemaError
@@ -9,8 +9,8 @@ from API.trade_trees.dto.trade_tree_parser import TradeTreeParser
 
 # Design notes:
 # Layer purposed for handling communication between client and API.
+@inject
 class TradeTreesController():
-    @inject
     def __init__(self, trade_tree_service: TradeTreeService):
         self.service = trade_tree_service
         self.blueprint = self.define_routes()
@@ -34,32 +34,35 @@ class TradeTreesController():
         @blueprint.route('/api/trade_tree', methods=['POST'])
         def post_trade_tree():
             # TODO: Introduce authorization.
-            tree = self.parser.parse_args()
+            payload = request.json
 
             try:
-                self.validator.validate(tree)
+                self.validator.validate(payload)
             except SchemaError as exception:
                 result = {
                     "error_message": exception.code
                 }
                 return flask.jsonify(result), 400
-
+            
+            tree = self.parser.parse_args()
+            
             result = self.service.post_trade_tree(tree)
             return flask.jsonify(result), 201
 
         @blueprint.route('/api/trade_tree', methods=['PUT'])
         def put_trade_tree():
             # TODO: Introduce authorization.
-            tree = self.parser.parse_args()
+            payload = request.json
 
             try:
-                self.validator.validate(tree)
+                self.validator.validate(payload)
             except SchemaError as exception:
                 result = {
                     "error_message": exception.code
                 }
                 return flask.jsonify(result), 400
 
+            tree = self.parser.parse_args()
             result = self.service.put_trade_tree(tree)
             return flask.jsonify(result), 204
 

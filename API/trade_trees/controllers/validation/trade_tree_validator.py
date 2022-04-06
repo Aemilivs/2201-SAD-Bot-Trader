@@ -1,12 +1,11 @@
-from schema import Schema, And, Use, Optional, SchemaError
+from schema import Schema, And, Use, SchemaError
 
 from API.trade_trees.dbo.trade_tree_discriminator import TradeTreeDiscriminator
+from API.trade_trees.dbo.trade_tree_outcome_operation import TradeTreeOutcomeOperation
 from API.trade_trees.dbo.trade_tree_schema_operation import TradeTreeSchemaOperation
-
 
 class TradeTreeValidator():
     def __init__(self):
-
         definitions = {
             'title': And(
                 str,
@@ -25,8 +24,7 @@ class TradeTreeValidator():
             ),
             'outcomes': And(
                 Use(list),
-                lambda it: len(it) >= 1,
-                error="At least one outcome have to exist."
+                self.validate_outcome
             )
         }
 
@@ -42,10 +40,11 @@ class TradeTreeValidator():
         return discriminator_is_valid and children_are_valid
 
     def validate_children(self, branch):
-        children = branch["children"]
 
-        if children is None:
+        if "children" not in branch:
             children = []
+        else:
+            children = branch["children"]
 
         children_count = len(children)
 
@@ -66,7 +65,7 @@ class TradeTreeValidator():
                     "One of branches contains `or` discriminator with not enough children.")
 
         if discriminator.upper() == TradeTreeDiscriminator.NOT.name:
-            if(children_count > 1):
+            if(children_count != 1):
                 raise SchemaError(
                     "One of branches contains `not` discriminator with too many children.")
 
@@ -132,3 +131,25 @@ class TradeTreeValidator():
         raise SchemaError(
             "One of schema branches contains invalid operation `{operation}`.".format(
                 operation=operation))
+
+    def validate_outcome(self, outcomes):
+        if len(outcomes) < 1:
+            raise SchemaError("Root does not contain any outcomes.")
+
+        for outcome in outcomes:
+            if "operation" not in outcome:
+                raise SchemaError("Root contains an invalid outcome without an operation.")
+
+            operation = outcome["operation"]
+
+            if operation.upper() == TradeTreeOutcomeOperation.OPEN_POSITION.name:
+                return True
+
+            if operation.upper() == TradeTreeOutcomeOperation.CLOSE_POSITION.name:
+                return True
+
+            # TODO: operand validation
+
+            # TODO: target validation
+
+            raise SchemaError("Root contains an outcome with an invalid operation: `{operation}`.".format(operation=operation))
