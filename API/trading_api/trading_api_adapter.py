@@ -1,5 +1,4 @@
 import requests
-# add key to the class?
 from constants import key
 
 
