@@ -131,3 +131,4 @@ API/*.sqlite
 *.sqlite
 .vscode
 .idea/*
+API/trading_api/constants.py
