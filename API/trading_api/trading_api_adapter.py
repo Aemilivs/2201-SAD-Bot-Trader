@@ -15,6 +15,7 @@ class Adapter:
             "weekly": "TIME_SERIES_WEEKLY",
             "monthly": "TIME_SERIES_MONTHLY"
         }
+
         if self.frequency not in frequencies:
             raise Exception("Wrong frequency. Use 'daily', 'monthly' or 'weekly' ")
 
@@ -32,6 +33,7 @@ class Adapter:
         raw_data = request.json()
         data = raw_data
         del data["Meta Data"]
+
         # needed to get value of the first key in the dict (differs by frequency)
         time_data_key = str(list(data.keys())[0])
 
@@ -42,10 +44,12 @@ class Adapter:
         # returning requested number of entries
         range_data = {}
         counter = 0
+
         for entry in data.get(time_data_key):
             if counter != self.number_of_entries:
                 range_data[entry] = data[time_data_key][entry]
                 counter += 1
+
         return range_data
 
     # search endpoint - returns best matches for the searched asset
@@ -62,6 +66,7 @@ class Adapter:
         if len(data["bestMatches"]) == 0:
             return False
         symbol = data["bestMatches"][0].get("1. symbol")
+
         if symbol == self.asset:
             return True
         else:
