@@ -16,7 +16,8 @@ class Adapter:
         }
 
         if self.frequency not in frequencies:
-            raise Exception("Wrong frequency. Use 'daily', 'monthly' or 'weekly' ")
+            raise Exception(
+                "Wrong frequency. Use 'daily', 'monthly' or 'weekly' ")
 
         if not self.search_asset():
             raise Exception(f"Asset {self.asset} not found")
@@ -33,12 +34,13 @@ class Adapter:
         data = raw_data
         del data["Meta Data"]
 
-        # needed to get value of the first key in the dict (differs by frequency)
+        # needed to get value of the first key in the dict (differs by
+        # frequency)
         time_data_key = str(list(data.keys())[0])
 
         if self.number_of_entries > len(data.get(time_data_key)):
-            raise Exception(
-                "Requested more entries than available. Available " + str(len(data.get(time_data_key))) + " entries")
+            raise Exception("Requested more entries than available. Available " +
+                            str(len(data.get(time_data_key))) + " entries")
 
         # returning requested number of entries
         range_data = {}
@@ -50,8 +52,8 @@ class Adapter:
                 counter += 1
 
         return range_data
-
     # search endpoint - returns best matches for the searched asset
+
     def search_asset(self):
         request_url = f'https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={self.asset}&apikey={key}'
 
@@ -64,6 +66,7 @@ class Adapter:
         data = request.json()
         if len(data["bestMatches"]) == 0:
             return False
+
         symbol = data["bestMatches"][0].get("1. symbol")
 
         if symbol == self.asset:
