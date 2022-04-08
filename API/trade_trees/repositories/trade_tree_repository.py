@@ -5,6 +5,7 @@ from API.trade_trees.dbo.trade_tree import *
 # Layer purposed for handling communication API and the database.
 # TODO Introduce tests for trade tree repository.
 
+
 @inject()
 class TradeTreeRepository:
     def __init__(self, configuration, db) -> None:

@@ -4,6 +4,7 @@ from API.trade_trees.dbo.trade_tree_discriminator import TradeTreeDiscriminator
 from API.trade_trees.dbo.trade_tree_outcome_operation import TradeTreeOutcomeOperation
 from API.trade_trees.dbo.trade_tree_schema_operation import TradeTreeSchemaOperation
 
+
 class TradeTreeValidator():
     def __init__(self):
         definitions = {
@@ -138,7 +139,8 @@ class TradeTreeValidator():
 
         for outcome in outcomes:
             if "operation" not in outcome:
-                raise SchemaError("Root contains an invalid outcome without an operation.")
+                raise SchemaError(
+                    "Root contains an invalid outcome without an operation.")
 
             operation = outcome["operation"]
 
@@ -152,4 +154,6 @@ class TradeTreeValidator():
 
             # TODO: target validation
 
-            raise SchemaError("Root contains an outcome with an invalid operation: `{operation}`.".format(operation=operation))
+            raise SchemaError(
+                "Root contains an outcome with an invalid operation: `{operation}`.".format(
+                    operation=operation))

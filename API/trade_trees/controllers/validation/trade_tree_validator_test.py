@@ -3,6 +3,7 @@ from schema import SchemaError
 
 from trade_tree_validator import TradeTreeValidator
 
+
 class TradeTreeValidatorTests(unittest.TestCase):
     def __init__(self, methodName: str = ...) -> None:
         super().__init__(methodName)
@@ -15,7 +16,7 @@ class TradeTreeValidatorTests(unittest.TestCase):
             "child": {},
             "outcomes": []
         }
-        
+
         self.assertRaises(SchemaError, sut.validate, input)
 
     def test_and_discriminator_without_children(self):
@@ -28,9 +29,9 @@ class TradeTreeValidatorTests(unittest.TestCase):
             },
             "outcomes": [{"a": 1}]
         }
-        
+
         self.assertRaises(SchemaError, sut.validate, input)
-    
+
     def test_or_discriminator_without_children(self):
         sut = TradeTreeValidator()
         input = {
@@ -41,7 +42,7 @@ class TradeTreeValidatorTests(unittest.TestCase):
             },
             "outcomes": [{"a": 1}]
         }
-        
+
         self.assertRaises(SchemaError, sut.validate, input)
 
     def test_not_discriminator_without_children(self):
@@ -54,7 +55,7 @@ class TradeTreeValidatorTests(unittest.TestCase):
             },
             "outcomes": [{"a": 1}]
         }
-        
+
         self.assertRaises(SchemaError, sut.validate, input)
 
     def test_schema_discriminator_with_invalid_operation(self):
@@ -81,7 +82,7 @@ class TradeTreeValidatorTests(unittest.TestCase):
             },
             "outcomes": [{"a": 1}]
         }
-        
+
         self.assertRaises(SchemaError, sut.validate, input)
 
     def test_valid_root(self):
@@ -130,5 +131,5 @@ class TradeTreeValidatorTests(unittest.TestCase):
                 }
             ]
         }
-        
+
         sut.validate(input)
