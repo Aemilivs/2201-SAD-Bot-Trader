@@ -7,4 +7,4 @@ Flask-RESTful==0.3.9
 peewee==3.14.10
 kink==0.6.2
 pylint==2.13.4
-schema==0.7.5
+schema>=0.7.0
