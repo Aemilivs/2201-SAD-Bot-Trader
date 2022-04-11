@@ -1,5 +1,10 @@
 import requests
 from constants import key
+import configparser
+
+config = configparser.ConfigParser()
+config.read('../configuration.ini')
+trading_api_url = config.get("DEFAULT", "TradingApiURL")
 
 
 class Adapter:
@@ -30,9 +35,9 @@ class Adapter:
         return True
 
     def get_data(self):
-        self.validate_asset()
+        # self.validate_asset()
         function = self.validate_frequency()
-        request_url = f'https://www.alphavantage.co/query?function={function}&symbol={self.asset}&apikey={key}'
+        request_url = f'{trading_api_url}?function={function}&symbol={self.asset}&apikey={key}'
 
         try:
             request = requests.get(request_url)
@@ -58,12 +63,11 @@ class Adapter:
                 range_data[entry] = data[time_data_key][entry]
                 counter += 1
 
-        print(range_data)
         return range_data
 
     # search endpoint - returns best matches for the searched asset
     def search_asset(self):
-        request_url = f'https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={self.asset}&apikey={key}'
+        request_url = f'{trading_api_url}?function=SYMBOL_SEARCH&keywords={self.asset}&apikey={key}'
 
         try:
             request = requests.get(request_url)
