@@ -1,4 +1,4 @@
-from API.trade_trees.dbo.trade_tree import TradeTreeBranch
+from api.trade_trees.dbo.trade_tree import TradeTreeBranch
 
 
 class TradeTreeBranchProjector():

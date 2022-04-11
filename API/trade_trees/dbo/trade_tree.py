@@ -1,7 +1,7 @@
 from operator import index
 import uuid
 from peewee import UUIDField, TimestampField, CharField, BooleanField, ForeignKeyField, IntegerField, BooleanField, TextField
-from API.common.db_schema import BaseModel
+from api.common.db_schema import BaseModel
 
 # Design notes:
 # Layer purposed for definiton of an object representation in the database.

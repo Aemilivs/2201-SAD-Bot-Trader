@@ -2,13 +2,13 @@ from flask import Blueprint, request
 import flask
 from kink import inject
 from schema import SchemaError
-from API.trade_trees.controllers.validation.trade_tree_validator import TradeTreeValidator
-from API.trade_trees.services.trade_tree_service import TradeTreeService
-from API.trade_trees.dto.trade_tree_parser import TradeTreeParser
+from api.trade_trees.controllers.validation.trade_tree_validator import TradeTreeValidator
+from api.trade_trees.services.trade_tree_service import TradeTreeService
+from api.trade_trees.dto.trade_tree_parser import TradeTreeParser
 
 
 # Design notes:
-# Layer purposed for handling communication between client and API.
+# Layer purposed for handling communication between client and api.
 @inject
 class TradeTreesController():
     def __init__(self, trade_tree_service: TradeTreeService):

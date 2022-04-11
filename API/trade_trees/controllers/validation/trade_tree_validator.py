@@ -1,8 +1,8 @@
 from schema import Schema, And, Use, SchemaError
 
-from API.trade_trees.dbo.trade_tree_discriminator import TradeTreeDiscriminator
-from API.trade_trees.dbo.trade_tree_outcome_operation import TradeTreeOutcomeOperation
-from API.trade_trees.dbo.trade_tree_schema_operation import TradeTreeSchemaOperation
+from api.trade_trees.dbo.trade_tree_discriminator import TradeTreeDiscriminator
+from api.trade_trees.dbo.trade_tree_outcome_operation import TradeTreeOutcomeOperation
+from api.trade_trees.dbo.trade_tree_schema_operation import TradeTreeSchemaOperation
 
 
 class TradeTreeValidator():

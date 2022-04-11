@@ -17,7 +17,7 @@ def bootstrap_di() -> None:
     # if from import expressions are put to the top of the file -
     # an exception messaging about missing service in the DI container is
     # thrown.
-    from API.trade_trees.repositories.trade_tree_repository import TradeTreeRepository
+    from api.trade_trees.repositories.trade_tree_repository import TradeTreeRepository
     di['trade_tree_repository'] = TradeTreeRepository()
-    from API.trade_trees.services.trade_tree_service import TradeTreeService
+    from api.trade_trees.services.trade_tree_service import TradeTreeService
     di['trade_tree_service'] = TradeTreeService()

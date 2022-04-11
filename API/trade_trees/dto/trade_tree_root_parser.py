@@ -1,5 +1,5 @@
 # Design notes:
-# Layer purposed for definiton of a contract between the user and API.
+# Layer purposed for definiton of a contract between the user and api.
 import uuid
 from flask_restful import reqparse, inputs
 

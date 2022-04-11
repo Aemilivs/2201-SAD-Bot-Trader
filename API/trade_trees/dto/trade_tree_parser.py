@@ -1,8 +1,8 @@
 # Design notes:
-# Layer purposed for definiton of a contract between the user and API.
+# Layer purposed for definiton of a contract between the user and api.
 import uuid
-from API.trade_trees.dto.trade_tree_branch_parser import TradeTreeBranchParser
-from API.trade_trees.dto.trade_tree_root_parser import TradeTreeRootParser
+from api.trade_trees.dto.trade_tree_branch_parser import TradeTreeBranchParser
+from api.trade_trees.dto.trade_tree_root_parser import TradeTreeRootParser
 
 
 class FakeRequest(dict):
