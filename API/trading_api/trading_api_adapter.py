@@ -21,7 +21,7 @@ class Adapter:
         }
         if self.frequency not in frequencies:
             raise Exception(
-                "Wrong frequency. Use 'daily', 'monthly' or 'weekly' ")
+                f"Wrong frequency. Use {', '.join(frequencies.keys())} ")
         return frequencies.get(self.frequency)
 
     def validate_asset(self):
