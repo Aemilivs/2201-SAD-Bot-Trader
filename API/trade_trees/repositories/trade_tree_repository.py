@@ -1,5 +1,5 @@
 from kink import inject
-from api.trade_trees.dbo.trade_tree import *
+from API.trade_trees.dbo.trade_tree import *
 
 # Design notes:
 # Layer purposed for handling communication API and the database.
