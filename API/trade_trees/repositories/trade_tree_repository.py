@@ -3,6 +3,7 @@ from API.trade_trees.dbo.trade_tree import *
 
 # Design notes:
 # Layer purposed for handling communication API and the database.
+# TODO Introduce tests for trade tree repository.
 
 
 @inject()

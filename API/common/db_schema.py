@@ -1,7 +1,7 @@
-from kink import di, inject
+import kink
 from peewee import Model, SqliteDatabase
 
 
 class BaseModel(Model):
     class Meta:
-        database = di['db']
+        database = kink.di['db']
