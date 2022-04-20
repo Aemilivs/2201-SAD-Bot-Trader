@@ -4,8 +4,12 @@ from flask_httpauth import HTTPBasicAuth
 
 auth = HTTPBasicAuth()
 
+USER_DATA = {
+    "username": "password"
+}
+
 
 class PrivateResource(Resource):
-    @auth.login_required
     def get(self):
-        return jsonify({"status": True})
+        if auth.current_user() in USER_DATA:
+            return jsonify({"status": True})
