@@ -7,8 +7,8 @@ app = Flask(__name__)
 api = Api(app, prefix="/api/v1")
 auth = HTTPBasicAuth()
 
-#TODO: Create database
-#TODO: Only store Hashes instead of plain text passwords
+# TODO: Create database
+# TODO: Only store Hashes instead of plain text passwords
 USER_DATA = {
     "username": "password"
 }
