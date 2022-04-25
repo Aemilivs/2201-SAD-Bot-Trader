@@ -1,5 +1,5 @@
-from kink import di
-from peewee import Model
+from kink import di, inject
+from peewee import Model, SqliteDatabase
 
 
 class BaseModel(Model):
