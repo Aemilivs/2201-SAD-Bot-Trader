@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 import flask
 #from flask_httpauth import HTTPBasicAuth
-from API.authentication.app import auth
+from API.authentication.auth import auth
 from kink import inject
 from schema import SchemaError
 from API.trade_trees.controllers.validation.trade_tree_validator import TradeTreeValidator

@@ -1,7 +1,7 @@
 from flask import Blueprint
 import flask
 #from flask_httpauth import HTTPBasicAuth
-from API.authentication.app import auth
+from API.authentication.auth import auth
 
 health_blueprint = Blueprint('health', __name__)
 #auth = HTTPBasicAuth()

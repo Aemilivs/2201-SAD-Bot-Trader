@@ -1,10 +1,16 @@
-# Unit test suggestion
-import requests
-from requests.auth import HTTPBasicAuth
+from flask_httpauth import HTTPBasicAuth
 
-# Making a get request
-response = requests.get('{URL}',
-                        auth=HTTPBasicAuth('username', 'password'))
+auth = HTTPBasicAuth()
 
-# print request object
-print(response)
+# TODO: Create database
+# TODO: Only store Hashes instead of plain text passwords
+USER_DATA = {
+    "username": "password"
+}
+
+
+@auth.verify_password
+def verify_password(username, password):
+    if username in USER_DATA and \
+            USER_DATA.get(username) == password:
+        return username
