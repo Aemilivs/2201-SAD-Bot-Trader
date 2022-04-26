@@ -1,24 +1,25 @@
 from flask import Blueprint, request
 import flask
-from flask_httpauth import HTTPBasicAuth
+#from flask_httpauth import HTTPBasicAuth
+from API.authentication.app import auth
 from kink import inject
 from schema import SchemaError
 from API.trade_trees.controllers.validation.trade_tree_validator import TradeTreeValidator
 from API.trade_trees.services.trade_tree_service import TradeTreeService
 from API.trade_trees.dto.trade_tree_parser import TradeTreeParser
 
-auth = HTTPBasicAuth()
-
-USER_DATA = {
-    "username": "password"
-}
-
-
-@auth.verify_password
-def verify_password(username, password):
-    if username in USER_DATA and \
-            USER_DATA.get(username) == password:
-        return username
+# auth = HTTPBasicAuth()
+#
+# USER_DATA = {
+#     "username": "password"
+# }
+#
+#
+# @auth.verify_password
+# def verify_password(username, password):
+#     if username in USER_DATA and \
+#             USER_DATA.get(username) == password:
+#         return username
 # Design notes:
 # Layer purposed for handling communication between client and API.
 @inject
@@ -33,17 +34,20 @@ class TradeTreesController():
         blueprint = Blueprint('trade_tree', __name__)
 
         @blueprint.route('/api/trade_tree/initialize', methods=['GET'])
+        @auth.login_required
         def initialize_trade_tree_table():
             self.service.initialize_trade_tree_table()
             return flask.jsonify({"result": True}), 200
 
         @blueprint.route('/api/trade_tree/<id>', methods=['GET'])
+        @auth.login_required
         def get_trade_tree(id):
             # TODO: Introduce authorization.
             result = self.service.get_trade_tree(id)
             return flask.jsonify(result), 200
 
         @blueprint.route('/api/trade_tree', methods=['POST'])
+        @auth.login_required
         def post_trade_tree():
             # TODO: Introduce authorization.
             payload = request.json
@@ -62,6 +66,7 @@ class TradeTreesController():
             return flask.jsonify(result), 201
 
         @blueprint.route('/api/trade_tree', methods=['PUT'])
+        @auth.login_required
         def put_trade_tree():
             # TODO: Introduce authorization.
             payload = request.json
@@ -79,13 +84,13 @@ class TradeTreesController():
             return flask.jsonify(result), 204
 
         @blueprint.route('/api/trade_tree/<id>', methods=['DELETE'])
+        @auth.login_required
         def delete_trade_tree(id):
-            # TODO: Introduce authorization.
-
             result = self.service.delete_trade_tree(id)
             return flask.jsonify(result=result), 200
 
         @blueprint.route('/api/trade_tree/evaluate/<id>', methods=['GET'])
+        @auth.login_required
         def evaluate_trade_tree(id):
             # TODO: Introduce authorization.
             result = self.service.evaluate_trade_tree(id)
