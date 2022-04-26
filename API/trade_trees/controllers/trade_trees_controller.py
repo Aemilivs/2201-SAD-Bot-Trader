@@ -1,12 +1,24 @@
 from flask import Blueprint, request
 import flask
+from flask_httpauth import HTTPBasicAuth
 from kink import inject
 from schema import SchemaError
 from API.trade_trees.controllers.validation.trade_tree_validator import TradeTreeValidator
 from API.trade_trees.services.trade_tree_service import TradeTreeService
 from API.trade_trees.dto.trade_tree_parser import TradeTreeParser
 
+auth = HTTPBasicAuth()
 
+USER_DATA = {
+    "username": "password"
+}
+
+
+@auth.verify_password
+def verify_password(username, password):
+    if username in USER_DATA and \
+            USER_DATA.get(username) == password:
+        return username
 # Design notes:
 # Layer purposed for handling communication between client and API.
 @inject

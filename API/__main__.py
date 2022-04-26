@@ -27,5 +27,10 @@ def verify_password(username, password):
         return username
 
 
+@app.route('/')
+@auth.login_required
+def index():
+    return "Hello, {}!".format(auth.current_user())
+
 if __name__ == "__main__":
     Api(app.run())
