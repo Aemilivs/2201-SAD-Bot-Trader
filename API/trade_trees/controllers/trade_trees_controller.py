@@ -22,6 +22,8 @@ from API.trade_trees.dto.trade_tree_parser import TradeTreeParser
 #         return username
 # Design notes:
 # Layer purposed for handling communication between client and API.
+
+
 @inject
 class TradeTreesController():
     def __init__(self, trade_tree_service: TradeTreeService):
