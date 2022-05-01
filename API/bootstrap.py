@@ -21,3 +21,7 @@ def bootstrap_di() -> None:
     di['trade_tree_repository'] = TradeTreeRepository()
     from API.trade_trees.services.trade_tree_service import TradeTreeService
     di['trade_tree_service'] = TradeTreeService()
+    from API.users.repositories.user_repository import UserRepository
+    di['user_repository'] = UserRepository()
+    from API.users.services.user_service import UserService
+    di['user_service'] = UserService()

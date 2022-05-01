@@ -1,25 +1,25 @@
 from datetime import datetime
+import uuid
 from kink import inject
 
 from API.users.dbo.user import User
 
 
 @inject()
-class TradeTreeRepository:
+class UserRepository:
     def __init__(self, configuration, db) -> None:
         self._configuration = configuration
         self.db = db
         self.db.connect()
         # TODO: Eventually come up with a resolution of whether we should call
         # it or not.
-        self.db.create_tables(
-            [User])
+        self.db.create_tables([User])
 
-    def create_user(self, user: User):
+    def create_user(self, entity: User):
         return User.create(
-            id = user.id,
-            name = user.name,
-            password = user.password,
+            id = uuid.uuid4(),
+            name = entity.name,
+            password = entity.password,
             isActive = True,
             createdAt = datetime.utcnow(),
             updatedAt = datetime.utcnow()
@@ -27,4 +27,14 @@ class TradeTreeRepository:
 
     def read_user(self, username):
         return User.select().where(User.username == username)
+
+    def update_user(self, entity: User):
+        return User.update(
+            name=entity.name,
+            isActive=entity.isActive,
+            updatedAt=datetime.utcnow()
+        ).where(entity.name == entity.name).execute()
+
+    def delete_user(self, username):
+        return User.delete().where(User.name == username).execute()
 
