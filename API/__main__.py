@@ -13,22 +13,9 @@ app.register_blueprint(health_blueprint)
 app.register_blueprint(TradeTreesController().blueprint)
 
 
-# TODO: Create database
 # TODO: Only store Hashes instead of plain text passwords
-USER_DATA = {
-    "username": "password"
-}
 
-
-@auth.verify_password
-def verify_password(username, password):
-    if username in USER_DATA and \
-            USER_DATA.get(username) == password:
-        return username
-
-
-@app.route('/')
-@auth.login_required
+@app.route('/create-user')
 def index():
     return "Hello, {}!".format(auth.current_user())
 
