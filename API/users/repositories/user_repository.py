@@ -11,7 +11,9 @@ class UserRepository:
     def __init__(self, configuration, db) -> None:
         self._configuration = configuration
         self.db = db
-        self.db.connect()
+        #The line below commented due to error
+        # peewee.OperationalError: Connection already opened.
+        # self.db.connect()
         # TODO: Eventually come up with a resolution of whether we should call
         # it or not.
         self.db.create_tables([User])
