@@ -17,12 +17,12 @@ class UserRepository:
 
     def create_user(self, entity: User):
         return User.create(
-            id = uuid.uuid4(),
-            name = entity.name,
-            password = entity.password,
-            isActive = True,
-            createdAt = datetime.utcnow(),
-            updatedAt = datetime.utcnow()
+            id=uuid.uuid4(),
+            name=entity.name,
+            password=entity.password,
+            isActive=True,
+            createdAt=datetime.utcnow(),
+            updatedAt=datetime.utcnow()
         )
 
     def read_user(self, username):
