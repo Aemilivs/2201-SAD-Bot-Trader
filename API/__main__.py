@@ -14,7 +14,7 @@ app.register_blueprint(TradeTreesController().blueprint)
 
 
 # TODO: Only store Hashes instead of plain text passwords
-
+# TODO: Add endpoint to create new users, might be done with blue prints
 @app.route('/create-user')
 def index():
     return "Hello, {}!".format(auth.current_user())
