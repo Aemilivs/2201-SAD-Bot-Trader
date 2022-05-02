@@ -8,6 +8,7 @@ from API.trade_trees.controllers.validation.trade_tree_validator import TradeTre
 from API.trade_trees.services.trade_tree_service import TradeTreeService
 from API.trade_trees.dto.trade_tree_parser import TradeTreeParser
 from API.users.services.user_service import UserService
+from werkzeug.security import check_password_hash
 
 # auth = HTTPBasicAuth()
 #
@@ -38,14 +39,10 @@ class TradeTreesController():
     def authenticate(self, username, password):
         user = self.user_service.get_user(username)
 
-        if user == None:
-            return None
-
-        # TODO Hash the password
-        if user.password != password:
-            return None
-
-        return user
+        if user is not None:
+            if check_password_hash(user.password, password):
+                return user
+        return None
 
     def define_routes(self):
         blueprint = Blueprint('trade_tree', __name__)
