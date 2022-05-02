@@ -1,8 +1,9 @@
 from datetime import datetime
 import uuid
 from kink import inject
-
+from werkzeug.security import generate_password_hash
 from API.users.dbo.user import User
+
 
 
 @inject()
@@ -19,14 +20,14 @@ class UserRepository:
         return User.create(
             id=uuid.uuid4(),
             name=entity.name,
-            password=entity.password,
+            password_hash=generate_password_hash(entity.password),
             isActive=True,
             createdAt=datetime.utcnow(),
             updatedAt=datetime.utcnow()
         )
 
     def read_user(self, username):
-        return User.select().where(User.username == username)
+        return User.select().where(User.name == username)
 
     def update_user(self, entity: User):
         return User.update(
