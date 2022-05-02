@@ -1,4 +1,5 @@
 from flask_httpauth import HTTPBasicAuth
+from API.users.services.user_service import UserService
 from werkzeug.security import check_password_hash
 
 auth = HTTPBasicAuth()
@@ -9,8 +10,8 @@ auth = HTTPBasicAuth()
 
 
 @auth.verify_password
-def authenticate(self, username, password):
-    user = self.user_service.get_user(username)
+def authenticate(username, password):
+    user = UserService.get_user(username)
 
     if user is not None:
         if check_password_hash(user.password, password):
