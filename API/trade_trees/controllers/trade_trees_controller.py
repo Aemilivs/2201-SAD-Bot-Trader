@@ -100,4 +100,10 @@ class TradeTreesController():
             result = self.tree_service.evaluate_trade_tree(id)
             return flask.jsonify(result=result), 200
 
+        @blueprint.route('/api/create-user', methods=['POST'])
+        def post_new_user():
+            payload = request.json
+            # Todo: format data to be passed to database
+            return flask.jsonify(result), 201
+
         return blueprint
