@@ -20,8 +20,8 @@ class UserRepository:
     def create_user(self, entity: User):
         return User.create(
             id=uuid.uuid4(),
-            name=entity.name,
-            password_hash=generate_password_hash(entity.password),
+            name=entity['name'],
+            password_hash=generate_password_hash(entity['password']),
             isActive=True,
             createdAt=datetime.utcnow(),
             updatedAt=datetime.utcnow()
