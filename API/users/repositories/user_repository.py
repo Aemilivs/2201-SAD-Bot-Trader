@@ -5,13 +5,12 @@ from werkzeug.security import generate_password_hash
 from API.users.dbo.user import User
 
 
-
 @inject()
 class UserRepository:
     def __init__(self, configuration, db) -> None:
         self._configuration = configuration
         self.db = db
-        #The line below commented due to error
+        # The line below commented due to error
         # peewee.OperationalError: Connection already opened.
         # self.db.connect()
         # TODO: Eventually come up with a resolution of whether we should call

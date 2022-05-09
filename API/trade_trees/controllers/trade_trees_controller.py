@@ -115,6 +115,7 @@ class TradeTreesController():
         def post_new_user():
             payload = request.json
             # Todo: format data to be passed to database
-            return flask.jsonify(result), 201
+            response = self.user_service.post_user(payload)
+            return flask.jsonify(result=response), 204
 
         return blueprint
