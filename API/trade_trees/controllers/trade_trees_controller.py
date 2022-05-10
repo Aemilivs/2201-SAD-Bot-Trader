@@ -1,14 +1,12 @@
 from flask import Blueprint, request
 import flask
 from API.authentication.auth import auth
-#from flask_httpauth import HTTPBasicAuth as auth
 from kink import inject
 from schema import SchemaError
 from API.trade_trees.controllers.validation.trade_tree_validator import TradeTreeValidator
 from API.trade_trees.services.trade_tree_service import TradeTreeService
 from API.trade_trees.dto.trade_tree_parser import TradeTreeParser
 from API.users.services.user_service import UserService
-#from werkzeug.security import check_password_hash
 
 
 # auth = HTTPBasicAuth()
@@ -35,15 +33,6 @@ class TradeTreesController():
         self.blueprint = self.define_routes()
         self.parser = TradeTreeParser()
         self.validator = TradeTreeValidator()
-
-    # @auth.verify_password
-    # def verify_password(self, username, password):
-    #     user = self.user_service.get_user(username)
-    #
-    #     if user is not None:
-    #         if check_password_hash(user.password, password):
-    #             return user
-    #     return None
 
     def define_routes(self):
         blueprint = Blueprint('trade_tree', __name__)

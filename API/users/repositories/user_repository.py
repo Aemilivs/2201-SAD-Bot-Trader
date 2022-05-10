@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash
 from API.users.dbo.user import User
 
 
-@inject()
+@inject
 class UserRepository:
     def __init__(self, configuration, db) -> None:
         self._configuration = configuration
