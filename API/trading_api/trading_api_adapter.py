@@ -41,7 +41,6 @@ class Adapter:
             raise Exception(
                 f"Wrong frequency. Use {', '.join(intervals)} ")
         return interval
-        
 
     def get_data(self):
         # self.validate_asset()
