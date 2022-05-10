@@ -9,20 +9,20 @@ trading_api_url = config.get("DEFAULT", "TradingApiURL")
 
 class Adapter:
     def __init__(self, frequency, asset, number_of_entries):
-        self.frequency = frequency
+        self.frequency = self.validate_frequency(frequency)
         self.asset = asset
         self.number_of_entries = number_of_entries
 
-    def validate_frequency(self):
+    def validate_frequency(self, frequency):
         frequencies = {
             "daily": "TIME_SERIES_DAILY",
             "weekly": "TIME_SERIES_WEEKLY",
             "monthly": "TIME_SERIES_MONTHLY"
         }
-        if self.frequency not in frequencies:
+        if frequency not in frequencies:
             raise Exception(
                 f"Wrong frequency. Use {', '.join(frequencies.keys())} ")
-        return frequencies.get(self.frequency)
+        return frequencies.get(frequency)
 
     def validate_asset(self):
         data = self.search_asset()
@@ -36,8 +36,7 @@ class Adapter:
 
     def get_data(self):
         # self.validate_asset()
-        function = self.validate_frequency()
-        request_url = f'{trading_api_url}?function={function}&symbol={self.asset}&apikey={key}'
+        request_url = f'{trading_api_url}?function={self.frequency}&symbol={self.asset}&apikey={key}'
 
         try:
             request = requests.get(request_url)
