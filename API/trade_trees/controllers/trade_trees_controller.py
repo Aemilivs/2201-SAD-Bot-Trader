@@ -9,18 +9,6 @@ from API.trade_trees.dto.trade_tree_parser import TradeTreeParser
 from API.users.services.user_service import UserService
 
 
-# auth = HTTPBasicAuth()
-#
-# USER_DATA = {
-#     "username": "password"
-# }
-#
-#
-# @auth.verify_password
-# def verify_password(username, password):
-#     if username in USER_DATA and \
-#             USER_DATA.get(username) == password:
-#         return username
 # Design notes:
 # Layer purposed for handling communication between client and API.
 
