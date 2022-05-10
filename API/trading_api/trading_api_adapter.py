@@ -8,9 +8,10 @@ trading_api_url = config.get("DEFAULT", "TradingApiURL")
 
 
 class Adapter:
-    def __init__(self, frequency, asset, number_of_entries):
+    def __init__(self, frequency, asset, interval, number_of_entries):
         self.frequency = self.validate_frequency(frequency)
         self.asset = asset
+        self.interval = self.validate_interval(interval)
         self.number_of_entries = number_of_entries
 
     def validate_frequency(self, frequency):
@@ -34,9 +35,17 @@ class Adapter:
             raise Exception(f"Asset {self.asset} not found")
         return True
 
+    def validate_interval(self, interval):
+        intervals = ['1min', '5min', '15min', '30min', '60min']
+        if interval not in intervals:
+            raise Exception(
+                f"Wrong frequency. Use {', '.join(intervals)} ")
+        return interval
+        
+
     def get_data(self):
         # self.validate_asset()
-        request_url = f'{trading_api_url}?function={self.frequency}&symbol={self.asset}&apikey={key}'
+        request_url = f'{trading_api_url}?function={self.frequency}&symbol={self.asset}&interval={self.interval}&apikey={key}'
 
         try:
             request = requests.get(request_url)
