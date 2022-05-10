@@ -39,4 +39,3 @@ class UserRepository:
 
     def delete_user(self, username):
         return User.delete().where(User.name == username).execute()
-

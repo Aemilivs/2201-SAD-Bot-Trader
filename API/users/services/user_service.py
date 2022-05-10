@@ -3,6 +3,7 @@ from kink import inject
 from API.users.dbo.user import User
 from playhouse.shortcuts import model_to_dict
 
+
 @inject
 class UserService():
     def __init__(self, configuration, user_repository):

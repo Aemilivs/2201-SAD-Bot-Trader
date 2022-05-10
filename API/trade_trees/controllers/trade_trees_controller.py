@@ -15,7 +15,10 @@ from API.users.services.user_service import UserService
 
 @inject
 class TradeTreesController():
-    def __init__(self, trade_tree_service: TradeTreeService, user_service: UserService):
+    def __init__(
+            self,
+            trade_tree_service: TradeTreeService,
+            user_service: UserService):
         self.tree_service = trade_tree_service
         self.user_service = user_service
         self.blueprint = self.define_routes()
