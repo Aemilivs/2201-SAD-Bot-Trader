@@ -4,7 +4,7 @@ from flask_restful import Api
 from flask_httpauth import HTTPBasicAuth
 from .health.controllers.health_controller import health_blueprint
 from .trade_trees.controllers.trade_trees_controller import TradeTreesController
-from .trade_trees.controllers.users_controller import UsersController
+from .users.controllers.users_controller import UsersController
 
 auth = HTTPBasicAuth()
 app = Flask(__name__)
