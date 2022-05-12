@@ -10,6 +10,7 @@ from API.common.db_schema import BaseModel
 
 class TradeTreeRoot(BaseModel):
     id = UUIDField(primary_key=True, default=uuid.uuid4)
+    user_id = UUIDField(index=True,default=uuid.uuid4)
     title = CharField(max_length=100, null=False, index=False)
     isActive = BooleanField(null=False, index=False)
     createdAt = TimestampField(null=False, index=False)

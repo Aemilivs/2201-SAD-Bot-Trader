@@ -1,4 +1,5 @@
 from datetime import datetime
+from flask_restful import abort
 from playhouse.shortcuts import model_to_dict
 import uuid
 import flask
@@ -39,7 +40,7 @@ class TradeTreeService():
 
         # Delete all the existing branches associated with the given trade tree
         # root.
-        self.repository.delete_trade_tree_branches(root.id)
+        self.repository.delete_trade_tree_branches(root.id, root.user_id)
 
         # Flatten the tree structure in order to store it in the database.
         folded_branches = self.projector.fold_branches(root.child, root.id)
@@ -50,7 +51,8 @@ class TradeTreeService():
         # TODO Introduce error handling in case if operation failed.
         return root
 
-    def get_trade_tree(self, id):
+    def get_trade_tree(self, id, user_id):
+        self.verify_access(id, user_id)
         result = self.repository.read_trade_tree(id)
 
         if (len(result) < 1):
@@ -74,25 +76,37 @@ class TradeTreeService():
         }
 
     def put_trade_tree(self, root: TradeTreeRoot):
-        root.updated_at = datetime.utcnow()
-        self.repository.update_trade_tree(root)
-
-        # Delete all the existing branches associated with the given trade tree
-        # root.
-        self.repository.delete_trade_tree_branches(root.id)
+        self.verify_access(root.id, root.user_id)
 
         # Flatten the tree structure in order to store it in the database.
         folded_branches = self.projector.fold_branches(root.child, root.id)
         deflated_branches = self.projector.deflate_branches(folded_branches)
 
+        # Delete all the existing branches associated with the given trade tree
+        # root.
+        self.repository.delete_trade_tree_branches(root.id, root.user_id)
+
         # Introduce the branches into the database.
+        root.updated_at = datetime.utcnow()
+
+        self.repository.update_trade_tree(root)
         self.repository.create_branches(deflated_branches)
 
         return root
 
-    def delete_trade_tree(self, id):
-        return self.repository.delete_trade_tree(id)
+    def verify_access(self, id, user_id):
+        results = self.repository.read_user_tree_roots(user_id)
+        trees = list(map(lambda it: str(it.id), results))
 
-    def evaluate_trade_tree(self, id):
-        tree = self.get_trade_tree(id)
+        if str(id) not in trees:
+            abort(401, message="User is not authorized to change this resource.")
+
+    def delete_trade_tree(self, id, user_id):
+        self.verify_access(id, user_id)
+        self.repository.delete_trade_tree(id, user_id)
+        self.repository.delete_trade_tree_branches(id)
+        return True
+
+    def evaluate_trade_tree(self, id, user_id):
+        tree = self.get_trade_tree(id, user_id)
         return self.evaluator.evaluate_tree(tree)

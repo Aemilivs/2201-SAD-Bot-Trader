@@ -8,15 +8,14 @@ auth = HTTPBasicAuth()
 #     "username": "password"
 # }
 
+def get_auth():
+    return auth.get_auth()
 
 @auth.verify_password
 def authenticate(username, password):
-    result = UserService().get_user(username)
-    print(result[0].password_hash)
-    print(result[0].name)
+    user = UserService().get_user(username)
 
-    print(check_password_hash(result[0].password_hash, password))
-    if len(result) > 0:
-        if check_password_hash(result[0].password_hash, password):
-            return result[0].name
+    if user is not None:
+        if check_password_hash(user.password_hash, password):
+            return user.name
     return None

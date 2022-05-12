@@ -37,14 +37,19 @@ class TradeTreesController():
         @blueprint.route('/api/trade_tree/<id>', methods=['GET'])
         @auth.login_required
         def get_trade_tree(id):
-            # TODO: Introduce authorization.
-            result = self.tree_service.get_trade_tree(id)
-            return flask.jsonify(result), 200
+            username = auth.get_auth().username
+            user_id = self.user_service.get_user(username).id
+            
+            try:
+                result = self.tree_service.get_trade_tree(id, user_id)
+                return flask.jsonify(result), 200
+            except Exception as exception:
+                return flask.jsonify(error_message=exception.data['message']), exception.code
+            
 
         @blueprint.route('/api/trade_tree', methods=['POST'])
         @auth.login_required
         def post_trade_tree():
-            # TODO: Introduce authorization.
             payload = request.json
 
             try:
@@ -57,13 +62,18 @@ class TradeTreesController():
 
             tree = self.parser.parse_args()
 
-            result = self.tree_service.post_trade_tree(tree)
-            return flask.jsonify(result), 201
+            username = auth.get_auth().username
+            user_id = self.user_service.get_user(username).id
+            tree.user_id = user_id
+            try:
+                result = self.tree_service.post_trade_tree(tree)
+                return flask.jsonify(result), 201
+            except Exception as exception:
+                return flask.jsonify(error_message=exception.data['message']), exception.code
 
         @blueprint.route('/api/trade_tree', methods=['PUT'])
         @auth.login_required
         def put_trade_tree():
-            # TODO: Introduce authorization.
             payload = request.json
 
             try:
@@ -75,20 +85,38 @@ class TradeTreesController():
                 return flask.jsonify(result), 400
 
             tree = self.parser.parse_args()
-            result = self.tree_service.put_trade_tree(tree)
-            return flask.jsonify(result), 204
+            username = auth.get_auth().username
+            user_id = self.user_service.get_user(username).id
+            tree.user_id = user_id
+            
+            try:
+                result = self.tree_service.put_trade_tree(tree)
+                return flask.jsonify(result), 200
+            except Exception as exception:
+                return flask.jsonify(error_message=exception.data['message']), exception.code
 
         @blueprint.route('/api/trade_tree/<id>', methods=['DELETE'])
         @auth.login_required
         def delete_trade_tree(id):
-            result = self.tree_service.delete_trade_tree(id)
-            return flask.jsonify(result=result), 200
-
+            username = auth.get_auth().username
+            user_id = self.user_service.get_user(username).id
+            
+            try:
+                result = self.tree_service.delete_trade_tree(id, user_id)
+                return flask.jsonify(result=result), 200
+            except Exception as exception:
+                return flask.jsonify(error_message=exception.data['message']), exception.code
+            
         @blueprint.route('/api/trade_tree/evaluate/<id>', methods=['GET'])
         @auth.login_required
         def evaluate_trade_tree(id):
-            # TODO: Introduce authorization.
-            result = self.tree_service.evaluate_trade_tree(id)
-            return flask.jsonify(result=result), 200
+            username = auth.get_auth().username
+            user_id = self.user_service.get_user(username).id
+            
+            try:
+                result = self.tree_service.evaluate_trade_tree(id, user_id)
+                return flask.jsonify(result=result), 200
+            except Exception as exception:
+                return flask.jsonify(error_message=exception.data['message']), exception.code
 
         return blueprint
