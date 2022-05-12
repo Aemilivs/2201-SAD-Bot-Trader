@@ -8,8 +8,10 @@ auth = HTTPBasicAuth()
 #     "username": "password"
 # }
 
+
 def get_auth():
     return auth.get_auth()
+
 
 @auth.verify_password
 def authenticate(username, password):

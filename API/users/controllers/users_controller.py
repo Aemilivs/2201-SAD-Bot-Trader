@@ -19,7 +19,8 @@ class UsersController:
             try:
                 self.user_service.post_user(payload)
             except Exception as exception:
-                return flask.jsonify(error_message=exception.data['message']), exception.code
+                return flask.jsonify(
+                    error_message=exception.data['message']), exception.code
             return flask.jsonify(result=True), 204
 
         return blueprint
