@@ -1,3 +1,4 @@
+from uuid import UUID
 from kink import inject
 from API.trade_trees.dbo.trade_tree import *
 
@@ -22,6 +23,7 @@ class TradeTreeRepository:
         # TODO Introduce some meaningful return value.
         rootResult = TradeTreeRoot.create(
             id=root.id,
+            user_id=root.user_id,
             title=root.title,
             isActive=root.is_active,
             createdAt=root.created_at,
@@ -60,18 +62,22 @@ class TradeTreeRepository:
             on=TradeTreeBranch.root == TradeTreeOutcome.root).where(
             TradeTreeRoot.id == id)
 
+    def read_user_tree_roots(self, user_id):
+        return TradeTreeRoot.select(
+            TradeTreeRoot.id).where(
+            TradeTreeRoot.user_id == user_id)
+
     def read_trade_tree_branches(self, id):
         return TradeTreeBranch.select().where(TradeTreeBranch.root == id)
 
     def update_trade_tree(self, entity: TradeTreeRoot):
         return TradeTreeRoot.update(
-            title=entity.title,
-            isActive=entity.is_active,
-            updatedAt=entity.updated_at
-        ).where(TradeTreeRoot.id == entity.id).execute()
+            title=entity.title, isActive=entity.is_active, updatedAt=entity.updated_at).where(
+            TradeTreeRoot.id == entity.id and TradeTreeRoot.user_id == entity.user_id).execute()
 
-    def delete_trade_tree(self, id):
-        return TradeTreeRoot.delete().where(TradeTreeRoot.id == id).execute()
+    def delete_trade_tree(self, id, user_id):
+        return TradeTreeRoot.delete().where(
+            TradeTreeRoot.id == id and TradeTreeRoot.user_id == user_id).execute()
 
-    def delete_trade_tree_branches(self, id):
+    def delete_trade_tree_branches(self, id, user_id):
         return TradeTreeBranch.delete().where(TradeTreeBranch.root == id).execute()

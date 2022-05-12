@@ -1,10 +1,23 @@
-# Unit test suggestion
-import requests
-from requests.auth import HTTPBasicAuth
+from flask_httpauth import HTTPBasicAuth
+from API.users.services.user_service import UserService
+from werkzeug.security import check_password_hash
+from playhouse.shortcuts import model_to_dict
+auth = HTTPBasicAuth()
 
-# Making a get request
-response = requests.get('{URL}',
-                        auth=HTTPBasicAuth('username', 'password'))
+# USER_DATA = {
+#     "username": "password"
+# }
 
-# print request object
-print(response)
+
+def get_auth():
+    return auth.get_auth()
+
+
+@auth.verify_password
+def authenticate(username, password):
+    user = UserService().get_user(username)
+
+    if user is not None:
+        if check_password_hash(user.password_hash, password):
+            return user.name
+    return None
