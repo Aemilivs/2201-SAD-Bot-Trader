@@ -39,13 +39,13 @@ class TradeTreesController():
         def get_trade_tree(id):
             username = auth.get_auth().username
             user_id = self.user_service.get_user(username).id
-            
+
             try:
                 result = self.tree_service.get_trade_tree(id, user_id)
                 return flask.jsonify(result), 200
             except Exception as exception:
-                return flask.jsonify(error_message=exception.data['message']), exception.code
-            
+                return flask.jsonify(
+                    error_message=exception.data['message']), exception.code
 
         @blueprint.route('/api/trade_tree', methods=['POST'])
         @auth.login_required
@@ -69,7 +69,8 @@ class TradeTreesController():
                 result = self.tree_service.post_trade_tree(tree)
                 return flask.jsonify(result), 201
             except Exception as exception:
-                return flask.jsonify(error_message=exception.data['message']), exception.code
+                return flask.jsonify(
+                    error_message=exception.data['message']), exception.code
 
         @blueprint.route('/api/trade_tree', methods=['PUT'])
         @auth.login_required
@@ -88,35 +89,38 @@ class TradeTreesController():
             username = auth.get_auth().username
             user_id = self.user_service.get_user(username).id
             tree.user_id = user_id
-            
+
             try:
                 result = self.tree_service.put_trade_tree(tree)
                 return flask.jsonify(result), 200
             except Exception as exception:
-                return flask.jsonify(error_message=exception.data['message']), exception.code
+                return flask.jsonify(
+                    error_message=exception.data['message']), exception.code
 
         @blueprint.route('/api/trade_tree/<id>', methods=['DELETE'])
         @auth.login_required
         def delete_trade_tree(id):
             username = auth.get_auth().username
             user_id = self.user_service.get_user(username).id
-            
+
             try:
                 result = self.tree_service.delete_trade_tree(id, user_id)
                 return flask.jsonify(result=result), 200
             except Exception as exception:
-                return flask.jsonify(error_message=exception.data['message']), exception.code
-            
+                return flask.jsonify(
+                    error_message=exception.data['message']), exception.code
+
         @blueprint.route('/api/trade_tree/evaluate/<id>', methods=['GET'])
         @auth.login_required
         def evaluate_trade_tree(id):
             username = auth.get_auth().username
             user_id = self.user_service.get_user(username).id
-            
+
             try:
                 result = self.tree_service.evaluate_trade_tree(id, user_id)
                 return flask.jsonify(result=result), 200
             except Exception as exception:
-                return flask.jsonify(error_message=exception.data['message']), exception.code
+                return flask.jsonify(
+                    error_message=exception.data['message']), exception.code
 
         return blueprint

@@ -24,7 +24,7 @@ class UserRepository:
         user = self.read_user(entity['name'])
 
         if user is not None:
-            abort(400, message = "User already exists.")
+            abort(400, message="User already exists.")
 
         return User.create(
             id=uuid.uuid4(),
