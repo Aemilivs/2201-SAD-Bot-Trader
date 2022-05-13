@@ -70,14 +70,14 @@ class TradeTreeRepository:
     def read_trade_tree_branches(self, id):
         return TradeTreeBranch.select().where(TradeTreeBranch.root == id)
 
-    def update_trade_tree(self, entity: TradeTreeRoot):
+    def update_trade_tree(self, entity):
         return TradeTreeRoot.update(
             title=entity.title, isActive=entity.is_active, updatedAt=entity.updated_at).where(
-            TradeTreeRoot.id == entity.id and TradeTreeRoot.user_id == entity.user_id).execute()
+            TradeTreeRoot.id == entity.id, TradeTreeRoot.user_id == entity.user_id).execute()
 
     def delete_trade_tree(self, id, user_id):
         return TradeTreeRoot.delete().where(
-            TradeTreeRoot.id == id and TradeTreeRoot.user_id == user_id).execute()
+            TradeTreeRoot.id == id, TradeTreeRoot.user_id == user_id).execute()
 
-    def delete_trade_tree_branches(self, id, user_id):
+    def delete_trade_tree_branches(self, id):
         return TradeTreeBranch.delete().where(TradeTreeBranch.root == id).execute()
