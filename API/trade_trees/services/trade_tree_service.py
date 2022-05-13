@@ -1,4 +1,5 @@
 from datetime import datetime
+import uuid
 from flask_restful import abort
 from playhouse.shortcuts import model_to_dict
 from uuid import UUID
