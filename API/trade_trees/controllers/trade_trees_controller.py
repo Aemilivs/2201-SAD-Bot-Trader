@@ -47,6 +47,19 @@ class TradeTreesController():
                 return flask.jsonify(
                     error_message=exception.data['message']), exception.code
 
+        @blueprint.route('/api/trade_tree/user', methods=['GET'])
+        @auth.login_required
+        def get_user_trade_trees():
+            username = auth.get_auth().username
+            user_id = self.user_service.get_user(username).id
+
+            try:
+                result = self.tree_service.get_user_trade_trees(user_id)
+                return flask.jsonify(result), 200
+            except Exception as exception:
+                return flask.jsonify(
+                    error_message=exception.data['message']), exception.code
+
         @blueprint.route('/api/trade_tree', methods=['POST'])
         @auth.login_required
         def post_trade_tree():

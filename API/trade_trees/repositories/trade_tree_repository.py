@@ -62,9 +62,9 @@ class TradeTreeRepository:
             on=TradeTreeBranch.root == TradeTreeOutcome.root).where(
             TradeTreeRoot.id == id)
 
-    def read_user_tree_roots(self, user_id):
+    def read_user_trade_tree_roots(self, user_id: UUID):
         return TradeTreeRoot.select(
-            TradeTreeRoot.id).where(
+            TradeTreeRoot.id, TradeTreeRoot.title).where(
             TradeTreeRoot.user_id == user_id)
 
     def read_trade_tree_branches(self, id):
