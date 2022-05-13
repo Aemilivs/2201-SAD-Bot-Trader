@@ -74,12 +74,13 @@ class TradeTreeService():
             "updatedAt": payload.json["updatedAt"],
             "outcomes": payload.json["tradetreeoutcome_set"]
         }
-    
+
     def get_user_trade_trees(self, user_id: UUID):
         query = self.repository.read_user_trade_tree_roots(user_id)
         results = [model_to_dict(results) for results in query]
-        roots = list(map(lambda it: { 'id': it['id'], 'title': it['title'] }, results))
-        return {'roots': roots }
+        roots = list(
+            map(lambda it: {'id': it['id'], 'title': it['title']}, results))
+        return {'roots': roots}
 
     def put_trade_tree(self, root: TradeTreeRoot):
         self.verify_access(root.id, root.user_id)
