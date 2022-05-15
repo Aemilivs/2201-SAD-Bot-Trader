@@ -3,6 +3,7 @@ from kink import inject
 from .constants import key
 import requests
 
+
 @inject
 class Adapter:
     def __init__(self, configuration):
@@ -53,13 +54,16 @@ class Adapter:
         data = request.json()
 
         if 'Note' in data:
-            abort(400, message = 'Unfortunately, we cannot execute given trade tree right now. Please, try again later.')
-        
+            abort(
+                400,
+                message='Unfortunately, we cannot execute given trade tree right now. Please, try again later.')
+
         # needed to get value of the first key in the dict (differs by
         # frequency)
         time_data_key = str(list(data.keys())[1])
 
-        if number_of_entries > 0 and number_of_entries > len(data.get(time_data_key)):
+        if number_of_entries > 0 and number_of_entries > len(
+                data.get(time_data_key)):
             raise Exception("Requested more entries than available. Available " +
                             str(len(data.get(time_data_key))) + " entries")
 
