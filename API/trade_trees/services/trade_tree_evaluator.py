@@ -97,7 +97,8 @@ class TradeTreeEvaluator():
         schema_path = branch["schema_path"]
         discriminant = branch["discriminant"]
         operation = branch["operation"]
-        # TODO idea: parse discriminant in order to get all the arguments for the api adapter
+        # TODO idea: parse discriminant in order to get all the arguments for
+        # the api adapter
 
         # Placeholder for a payload returned by an adapter.
         payload = self.adapter.get_data('daily', discriminant, '1min')

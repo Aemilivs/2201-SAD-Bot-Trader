@@ -84,7 +84,7 @@ class TradeTreeService():
 
         if len(roots) == 0:
             abort(404, message="User does not own any trade tree.")
-            
+
         return {'roots': roots}
 
     def put_trade_tree(self, root: TradeTreeRoot):

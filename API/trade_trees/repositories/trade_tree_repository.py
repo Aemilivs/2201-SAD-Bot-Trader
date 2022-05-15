@@ -72,8 +72,11 @@ class TradeTreeRepository:
 
     def update_trade_tree(self, entity):
         return TradeTreeRoot.update(
-            title=entity.title, isActive=entity.is_active, updatedAt=entity.updated_at).where(
-            TradeTreeRoot.id == entity.id, TradeTreeRoot.user_id == entity.user_id).execute()
+            title=entity.title,
+            isActive=entity.is_active,
+            updatedAt=entity.updated_at).where(
+            TradeTreeRoot.id == entity.id,
+            TradeTreeRoot.user_id == entity.user_id).execute()
 
     def delete_trade_tree(self, id, user_id):
         return TradeTreeRoot.delete().where(
