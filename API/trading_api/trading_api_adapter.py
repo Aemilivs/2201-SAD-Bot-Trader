@@ -1,8 +1,11 @@
 from flask_restful import abort
 from kink import inject
-from .constants import key
 import requests
-
+try:
+    from .constants import key
+except ImportError:
+    import os
+    key = os.environ['API_KEY']
 
 @inject
 class Adapter:
