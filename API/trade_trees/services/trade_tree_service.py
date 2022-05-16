@@ -1,7 +1,8 @@
 from datetime import datetime
+import uuid
 from flask_restful import abort
 from playhouse.shortcuts import model_to_dict
-import uuid
+from uuid import UUID
 import flask
 from kink import inject
 
@@ -40,7 +41,7 @@ class TradeTreeService():
 
         # Delete all the existing branches associated with the given trade tree
         # root.
-        self.repository.delete_trade_tree_branches(root.id, root.user_id)
+        self.repository.delete_trade_tree_branches(root.id)
 
         # Flatten the tree structure in order to store it in the database.
         folded_branches = self.projector.fold_branches(root.child, root.id)
@@ -75,6 +76,17 @@ class TradeTreeService():
             "outcomes": payload.json["tradetreeoutcome_set"]
         }
 
+    def get_user_trade_trees(self, user_id: UUID):
+        query = self.repository.read_user_trade_tree_roots(user_id)
+        results = [model_to_dict(results) for results in query]
+        roots = list(
+            map(lambda it: {'id': it['id'], 'title': it['title']}, results))
+
+        if len(roots) == 0:
+            abort(404, message="User does not own any trade tree.")
+
+        return {'roots': roots}
+
     def put_trade_tree(self, root: TradeTreeRoot):
         self.verify_access(root.id, root.user_id)
 
@@ -84,7 +96,7 @@ class TradeTreeService():
 
         # Delete all the existing branches associated with the given trade tree
         # root.
-        self.repository.delete_trade_tree_branches(root.id, root.user_id)
+        self.repository.delete_trade_tree_branches(root.id)
 
         # Introduce the branches into the database.
         root.updated_at = datetime.utcnow()
@@ -95,8 +107,11 @@ class TradeTreeService():
         return root
 
     def verify_access(self, id, user_id):
-        results = self.repository.read_user_tree_roots(user_id)
+        results = self.repository.read_user_trade_tree_roots(user_id)
         trees = list(map(lambda it: str(it.id), results))
+
+        if len(trees) == 0:
+            abort(404, message="User does not own requested resource(s).")
 
         if str(id) not in trees:
             abort(401, message="User is not authorized to change this resource.")
