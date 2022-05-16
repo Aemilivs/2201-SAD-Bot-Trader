@@ -7,6 +7,7 @@ except ImportError:
     import os
     key = os.environ['API_KEY']
 
+
 @inject
 class Adapter:
     def __init__(self, configuration):
