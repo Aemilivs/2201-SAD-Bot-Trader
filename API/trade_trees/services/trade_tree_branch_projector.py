@@ -1,4 +1,5 @@
 from API.trade_trees.dbo.trade_tree import TradeTreeBranch
+from API.trade_trees.dbo.trade_tree_discriminator import TradeTreeDiscriminator
 
 
 class TradeTreeBranchProjector():
@@ -34,7 +35,12 @@ class TradeTreeBranchProjector():
             children=[]
         )
 
-        if(entity.discriminator == 'schema'):
+        if(entity.discriminator.upper() == TradeTreeDiscriminator.SCHEMA.name):
+            entity.schema_path = branch["schema_path"]
+            entity.discriminant = branch["discriminant"]
+            entity.operation = branch["operation"]
+
+        if(entity.discriminator.upper() == TradeTreeDiscriminator.TIME_SERIES.name):
             entity.schema_path = branch["schema_path"]
             entity.discriminant = branch["discriminant"]
             entity.operation = branch["operation"]

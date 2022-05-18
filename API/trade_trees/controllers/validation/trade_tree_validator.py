@@ -3,6 +3,7 @@ from schema import Schema, And, Use, SchemaError
 from API.trade_trees.dbo.trade_tree_discriminator import TradeTreeDiscriminator
 from API.trade_trees.dbo.trade_tree_outcome_operation import TradeTreeOutcomeOperation
 from API.trade_trees.dbo.trade_tree_schema_operation import TradeTreeSchemaOperation
+from API.trade_trees.dbo.trade_tree_time_series_operation import TradeTreeTimeSeriesOperation
 
 
 class TradeTreeValidator():
@@ -75,6 +76,11 @@ class TradeTreeValidator():
                 raise SchemaError(
                     "One of branches contains `schema` discriminator with children.")
 
+        if discriminator.upper() == TradeTreeDiscriminator.TIME_SERIES.name:
+            if(children_count > 0):
+                raise SchemaError(
+                    "One of branches contains `time_series` discriminator with children.")
+
         for child in children:
             self.validate_child(child)
 
@@ -93,45 +99,39 @@ class TradeTreeValidator():
             return True
 
         if discriminator.upper() == TradeTreeDiscriminator.SCHEMA.name:
-            return self.validate_operation(branch)
+            return self.validate_schema_operation(branch)
+
+        if discriminator.upper() == TradeTreeDiscriminator.TIME_SERIES.name:
+            return self.validate_time_series_operation(branch)
 
         raise SchemaError(
             "One of branches contains invalid discriminator `{discriminator}`.".format(
                 discriminator=discriminator))
 
-    def validate_operation(self, branch):
+    def validate_schema_operation(self, branch):
         operation = branch["operation"]
+        operations = self.get_operations(TradeTreeSchemaOperation)
 
-        if operation.upper() == TradeTreeSchemaOperation.NUMERIC_LESS_OR_EQUAL_COMPARISON.name:
-            return True
-
-        if operation.upper() == TradeTreeSchemaOperation.NUMERIC_LESS_COMPARISON.name:
-            return True
-
-        if operation.upper() == TradeTreeSchemaOperation.NUMERIC_EQUAL_COMPARISON.name:
-            return True
-
-        if operation.upper() == TradeTreeSchemaOperation.NUMERIC_MORE_COMPARISON.name:
-            return True
-
-        if operation.upper() == TradeTreeSchemaOperation.NUMERIC_MORE_OR_EQUAL_COMPARISON.name:
-            return True
-
-        if operation.upper() == TradeTreeSchemaOperation.STRING_STARTS_WITH_COMPARISON.name:
-            return True
-
-        if operation.upper() == TradeTreeSchemaOperation.STRING_EQUAL_COMPARISON.name:
-            return True
-
-        if operation.upper() == TradeTreeSchemaOperation.STRING_CONTAINS_COMPARISON.name:
-            return True
-
-        if operation.upper() == TradeTreeSchemaOperation.STRING_ENDS_WITH_COMPARISON.name:
+        if operation.upper() in operations:
             return True
 
         raise SchemaError(
             "One of schema branches contains invalid operation `{operation}`.".format(
                 operation=operation))
+
+    def validate_time_series_operation(self, branch):
+        operation = branch["operation"]
+        operations = self.get_operations(TradeTreeTimeSeriesOperation)
+
+        if operation.upper() in operations:
+            return True
+
+        raise SchemaError(
+            "One of time series branches contains invalid operation `{operation}`.".format(
+                operation=operation))
+
+    def get_operations(self, enumeration):
+        return list(enumeration.__members__.keys())
 
     def validate_outcome(self, outcomes):
         if len(outcomes) < 1:

@@ -19,6 +19,10 @@ def bootstrap_di() -> None:
     # thrown.
     from API.trade_trees.repositories.trade_tree_repository import TradeTreeRepository
     di['trade_tree_repository'] = TradeTreeRepository()
+    from API.trading_api.trading_api_adapter import Adapter
+    di['adapter'] = Adapter()
+    from API.trade_trees.services.trade_tree_evaluator import TradeTreeEvaluator
+    di['evaluator'] = TradeTreeEvaluator()
     from API.trade_trees.services.trade_tree_service import TradeTreeService
     di['trade_tree_service'] = TradeTreeService()
     from API.users.repositories.user_repository import UserRepository

@@ -16,11 +16,11 @@ from API.trade_trees.services.trade_tree_evaluator import TradeTreeEvaluator
 
 @inject
 class TradeTreeService():
-    def __init__(self, configuration, trade_tree_repository):
+    def __init__(self, configuration, trade_tree_repository, evaluator):
         self.configuration = configuration
         self.repository = trade_tree_repository
         self.projector = TradeTreeBranchProjector()
-        self.evaluator = TradeTreeEvaluator()
+        self.evaluator = evaluator
 
     def initialize_trade_tree_table(self):
         self.repository.initialize_trade_tree_table()
