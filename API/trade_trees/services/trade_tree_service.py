@@ -1,6 +1,6 @@
 from datetime import datetime
 import uuid
-from flask_restful import abort
+from apiflask import abort
 from playhouse.shortcuts import model_to_dict
 from uuid import UUID
 import flask
@@ -83,7 +83,7 @@ class TradeTreeService():
             map(lambda it: {'id': it['id'], 'title': it['title']}, results))
 
         if len(roots) == 0:
-            abort(404, message="User does not own any trade tree.")
+            abort(404, "User does not own any trade tree.")
 
         return {'roots': roots}
 
@@ -111,10 +111,10 @@ class TradeTreeService():
         trees = list(map(lambda it: str(it.id), results))
 
         if len(trees) == 0:
-            abort(404, message="User does not own requested resource(s).")
+            abort(404, "User does not own requested resource(s).")
 
         if str(id) not in trees:
-            abort(401, message="User is not authorized to change this resource.")
+            abort(401, "User is not authorized to change this resource.")
 
     def delete_trade_tree(self, id, user_id):
         self.verify_access(id, user_id)
