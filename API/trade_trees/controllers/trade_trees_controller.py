@@ -33,7 +33,9 @@ class TradeTreesController():
         blueprint = APIBlueprint('trade_tree', __name__)
 
         @blueprint.route('/api/trade_tree/initialize', methods=['GET'])
-        @blueprint.output(InitializeTradeTreeTableAPISchema, status_code=200, description='Initialize the database.')
+        @blueprint.output(InitializeTradeTreeTableAPISchema,
+                          status_code=200,
+                          description='Initialize the database.')
         @blueprint.doc(hide=True)
         @auth.login_required
         def initialize_trade_tree_table():
@@ -46,7 +48,7 @@ class TradeTreesController():
             return flask.jsonify({"result": True}), 200
 
         @blueprint.route('/api/trade_tree/<id>', methods=['GET'])
-        @blueprint.doc(responses=[200,400])
+        @blueprint.doc(responses=[200, 400])
         @blueprint.output(GetTradeTreeAPIOutSchemaSuccess, status_code=200)
         @blueprint.auth_required(auth)
         @auth.login_required
@@ -61,10 +63,9 @@ class TradeTreesController():
 
             result = self.tree_service.get_trade_tree(id, user_id)
             return flask.jsonify(result)
-            
 
         @blueprint.route('/api/trade_tree/user', methods=['GET'])
-        @blueprint.doc(responses=[200,400])
+        @blueprint.doc(responses=[200, 400])
         @blueprint.output(GetUserTradeTreeAPIOutSchemaSuccess, status_code=200)
         @blueprint.auth_required(auth)
         @auth.login_required
@@ -79,10 +80,11 @@ class TradeTreesController():
             return flask.jsonify(result)
 
         @blueprint.route('/api/trade_tree', methods=['POST'])
-        @blueprint.doc(responses=[201,400])
+        @blueprint.doc(responses=[201, 400])
         @blueprint.auth_required(auth)
         @blueprint.input(PostTradeTreeAPIInSchemaSuccess)
-        @blueprint.output(PostTradeTreeAPIOutSchemaSuccess, example=post_trade_tree_example, status_code=201)
+        @blueprint.output(PostTradeTreeAPIOutSchemaSuccess,
+                          example=post_trade_tree_example, status_code=201)
         @auth.login_required
         def post_trade_tree(payload):
             """
@@ -102,7 +104,7 @@ class TradeTreesController():
             return flask.jsonify(result)
 
         @blueprint.route('/api/trade_tree', methods=['PUT'])
-        @blueprint.doc(responses=[200,400,404])
+        @blueprint.doc(responses=[200, 400, 404])
         @blueprint.auth_required(auth)
         @blueprint.input(PutTradeTreeAPIInSchemaSuccess)
         @blueprint.output(PutTradeTreeAPIOutSchemaSuccess, status_code=200)
@@ -125,10 +127,9 @@ class TradeTreesController():
 
             result = self.tree_service.put_trade_tree(tree)
             return flask.jsonify(result)
-            
 
         @blueprint.route('/api/trade_tree/<id>', methods=['DELETE'])
-        @blueprint.doc(responses=[200,400])
+        @blueprint.doc(responses=[200, 400])
         @blueprint.output(DeleteTradeTreeAPIOutSchemaSuccess, status_code=200)
         @blueprint.auth_required(auth)
         @auth.login_required
@@ -145,8 +146,9 @@ class TradeTreesController():
             return flask.jsonify(result=result)
 
         @blueprint.route('/api/trade_tree/evaluate/<id>', methods=['GET'])
-        @blueprint.doc(responses=[200,400])
-        @blueprint.output(EvaluateTradeTreeAPIOutSchemaSuccess, status_code=200)
+        @blueprint.doc(responses=[200, 400])
+        @blueprint.output(EvaluateTradeTreeAPIOutSchemaSuccess,
+                          status_code=200)
         @blueprint.auth_required(auth)
         @auth.login_required
         def evaluate_trade_tree(id):
