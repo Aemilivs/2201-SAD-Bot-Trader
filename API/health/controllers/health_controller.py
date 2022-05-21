@@ -1,21 +1,8 @@
-from flask import Blueprint
+from apiflask import APIBlueprint
 import flask
-#from flask_httpauth import HTTPBasicAuth
 from API.authentication.auth import auth
 
-health_blueprint = Blueprint('health', __name__)
-#auth = HTTPBasicAuth()
-
-# USER_DATA = {
-#     "username": "password"
-# }
-#
-#
-# @auth.verify_password
-# def verify_password(username, password):
-#     if username in USER_DATA and \
-#             USER_DATA.get(username) == password:
-#         return username
+health_blueprint = APIBlueprint('health', __name__)
 
 
 @health_blueprint.route('/api/health', methods=['GET'])

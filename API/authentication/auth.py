@@ -1,4 +1,4 @@
-from flask_httpauth import HTTPBasicAuth
+from apiflask.security import HTTPBasicAuth
 from API.users.services.user_service import UserService
 from werkzeug.security import check_password_hash
 from playhouse.shortcuts import model_to_dict

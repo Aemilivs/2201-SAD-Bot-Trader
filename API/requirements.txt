@@ -11,3 +11,4 @@ pylint==2.13.4
 schema>=0.7.0
 requests==2.27.1
 configparser==5.2.0
+apiflask==1.0.2

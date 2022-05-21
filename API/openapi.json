@@ -1,0 +1,760 @@
+{
+  "info": {
+    "title": "Bot Trader API",
+    "version": "1.0"
+  },
+  "tags": [
+    {
+      "name": "Health"
+    },
+    {
+      "name": "Trade_Tree"
+    },
+    {
+      "name": "Users"
+    }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful response"
+          }
+        },
+        "tags": [
+          "Health"
+        ],
+        "summary": "Health"
+      }
+    },
+    "/api/trade_tree": {
+      "post": {
+        "parameters": [],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostTradeTreeAPIOutSchemaSuccess"
+                },
+                "example": {
+                  "title": "Titlee",
+                  "is_active": true,
+                  "child": {
+                    "discriminator": "AND",
+                    "children": [
+                      {
+                        "discriminator": "AND",
+                        "children": [
+                          {
+                            "discriminator": "TIME_SERIES",
+                            "schema_path": "1. open",
+                            "discriminant": "USD;10",
+                            "operation": "TIME_SERIES_AVERAGE_MORE_OR_EQUAL_COMPARISON"
+                          },
+                          {
+                            "discriminator": "TIME_SERIES",
+                            "schema_path": "2. high",
+                            "discriminant": "USD;10",
+                            "operation": "TIME_SERIES_MEAN_MORE_COMPARISON"
+                          }
+                        ]
+                      },
+                      {
+                        "discriminator": "TIME_SERIES",
+                        "schema_path": "5. volume",
+                        "discriminant": "USD;10",
+                        "operation": "TIME_SERIES_MAX_LESS_OR_EQUAL_COMPARISON"
+                      }
+                    ]
+                  },
+                  "outcomes": [
+                    {
+                      "operation": "OPEN_POSITION",
+                      "operand": "1",
+                      "target": "BTC"
+                    },
+                    {
+                      "operation": "CLOSE_POSITION",
+                      "operand": "1",
+                      "target": "ETH"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Authentication error"
+          }
+        },
+        "tags": [
+          "Trade_Tree"
+        ],
+        "summary": "Create a new trade tree for the current user.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostTradeTreeAPIInSchemaSuccess"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PutTradeTreeAPIOutSchemaSuccess"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Authentication error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Not Found"
+          }
+        },
+        "tags": [
+          "Trade_Tree"
+        ],
+        "summary": "Update a trade tree that the current user owns.",
+        "description": "If user does not own the tree - response has code 401 and a corresponding error message.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PutTradeTreeAPIInSchemaSuccess"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
+      }
+    },
+    "/api/create-user": {
+      "post": {
+        "parameters": [],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Created"
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new user."
+      }
+    },
+    "/api/trade_tree/user": {
+      "get": {
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserTradeTreeAPIOutSchemaSuccess"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Authentication error"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "tags": [
+          "Trade_Tree"
+        ],
+        "summary": "Fetch trade trees that current user owns.",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
+      }
+    },
+    "/api/trade_tree/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTradeTreeAPIOutSchemaSuccess"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Authentication error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "tags": [
+          "Trade_Tree"
+        ],
+        "summary": "Fetch a trade tree by it's id.",
+        "description": "If user does not own the tree - response has code 401 and a corresponding error message.",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteTradeTreeAPIOutSchemaSuccess"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Authentication error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "tags": [
+          "Trade_Tree"
+        ],
+        "summary": "Remove a trade tree by it's id.",
+        "description": "If user does not own the tree - response has code 401 and a corresponding error message.",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
+      }
+    },
+    "/api/trade_tree/evaluate/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvaluateTradeTreeAPIOutSchemaSuccess"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Authentication error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Bad Request"
+          }
+        },
+        "tags": [
+          "Trade_Tree"
+        ],
+        "summary": "Evaluate a trade tree by it's id.",
+        "description": "If user does not own the tree - response has code 401 and a corresponding error message.",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "openapi": "3.0.3",
+  "components": {
+    "schemas": {
+      "ValidationError": {
+        "properties": {
+          "detail": {
+            "type": "object",
+            "properties": {
+              "<location>": {
+                "type": "object",
+                "properties": {
+                  "<field_name>": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "HTTPError": {
+        "properties": {
+          "detail": {
+            "type": "object"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "TradeTreeBranchOutcome": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "enum": [
+              "OPEN_POSITION",
+              "CLOSE_POSITION"
+            ]
+          },
+          "target": {
+            "type": "string"
+          },
+          "operand": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "operand",
+          "operation",
+          "target"
+        ]
+      },
+      "TradeTreeBranchAPI": {
+        "type": "object",
+        "properties": {
+          "discriminator": {
+            "type": "string",
+            "enum": [
+              "AND",
+              "OR",
+              "NOT",
+              "SCHEMA",
+              "TIME_SERIES"
+            ]
+          },
+          "schema_path": {
+            "type": "string"
+          },
+          "discriminant": {
+            "type": "string"
+          },
+          "operation": {
+            "type": "string",
+            "enum": [
+              "NUMERIC_LESS_COMPARISON",
+              "NUMERIC_LESS_OR_EQUAL_COMPARISON",
+              "NUMERIC_EQUAL_COMPARISON",
+              "NUMERIC_MORE_COMPARISON",
+              "NUMERIC_MORE_OR_EQUAL_COMPARISON",
+              "STRING_EQUAL_COMPARISON",
+              "STRING_STARTS_WITH_COMPARISON",
+              "STRING_CONTAINS_COMPARISON",
+              "STRING_ENDS_WITH_COMPARISON",
+              "TIME_SERIES_MIN_LESS_COMPARISON",
+              "TIME_SERIES_MIN_LESS_OR_EQUAL_COMPARISON",
+              "TIME_SERIES_MIN_EQUAL_COMPARISON",
+              "TIME_SERIES_MIN_MORE_COMPARISON",
+              "TIME_SERIES_MIN_MORE_OR_EQUAL_COMPARISON",
+              "TIME_SERIES_AVERAGE_LESS_COMPARISON",
+              "TIME_SERIES_AVERAGE_LESS_OR_EQUAL_COMPARISON",
+              "TIME_SERIES_AVERAGE_EQUAL_COMPARISON",
+              "TIME_SERIES_AVERAGE_MORE_COMPARISON",
+              "TIME_SERIES_AVERAGE_MORE_OR_EQUAL_COMPARISON",
+              "TIME_SERIES_MEAN_LESS_COMPARISON",
+              "TIME_SERIES_MEAN_LESS_OR_EQUAL_COMPARISON",
+              "TIME_SERIES_MEAN_EQUAL_COMPARISON",
+              "TIME_SERIES_MEAN_MORE_COMPARISON",
+              "TIME_SERIES_MEAN_MORE_OR_EQUAL_COMPARISON",
+              "TIME_SERIES_MAX_LESS_COMPARISON",
+              "TIME_SERIES_MAX_LESS_OR_EQUAL_COMPARISON",
+              "TIME_SERIES_MAX_EQUAL_COMPARISON",
+              "TIME_SERIES_MAX_MORE_COMPARISON",
+              "TIME_SERIES_MAX_MORE_OR_EQUAL_COMPARISON"
+            ]
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TradeTreeBranchAPI"
+            }
+          }
+        }
+      },
+      "PostTradeTreeAPIInSchemaSuccess": {
+        "type": "object",
+        "properties": {
+          "outcomes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TradeTreeBranchOutcome"
+            }
+          },
+          "child": {
+            "$ref": "#/components/schemas/TradeTreeBranchAPI"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 50
+          },
+          "is_active": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      },
+      "PostTradeTreeAPIOutSchemaSuccess": {
+        "type": "object",
+        "properties": {
+          "child": {
+            "$ref": "#/components/schemas/TradeTreeBranchAPI"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "outcomes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TradeTreeBranchOutcome"
+            }
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 50
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "is_active": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "user_id"
+        ]
+      },
+      "PutTradeTreeAPIInSchemaSuccess": {
+        "type": "object",
+        "properties": {
+          "child": {
+            "$ref": "#/components/schemas/TradeTreeBranchAPI"
+          },
+          "outcomes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TradeTreeBranchOutcome"
+            }
+          },
+          "title": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 50
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "is_active": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ]
+      },
+      "PutTradeTreeAPIOutSchemaSuccess": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "boolean"
+          }
+        }
+      },
+      "TradeTreeHeadAPI": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "GetUserTradeTreeAPIOutSchemaSuccess": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TradeTreeHeadAPI"
+            }
+          }
+        }
+      },
+      "GetTradeTreeAPIOutSchemaSuccess": {
+        "type": "object",
+        "properties": {
+          "outcomes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TradeTreeBranchOutcome"
+            }
+          },
+          "child": {
+            "$ref": "#/components/schemas/TradeTreeBranchAPI"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 50
+          },
+          "is_active": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      },
+      "DeleteTradeTreeAPIOutSchemaSuccess": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "boolean"
+          }
+        }
+      },
+      "EvaluateTradeTreeAPIOutSchemaSuccess": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}

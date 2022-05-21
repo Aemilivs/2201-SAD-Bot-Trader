@@ -69,7 +69,7 @@ class TradeTreeValidator():
         if discriminator.upper() == TradeTreeDiscriminator.NOT.name:
             if(children_count != 1):
                 raise SchemaError(
-                    "One of branches contains `not` discriminator with too many children.")
+                    "One of branches contains `not` discriminator that does not have exactly 1 child.")
 
         if discriminator.upper() == TradeTreeDiscriminator.SCHEMA.name:
             if(children_count > 0):
