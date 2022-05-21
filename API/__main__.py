@@ -1,5 +1,4 @@
 """This module is the main runtime of the SAD Bot Trader API"""
-from flask import Flask
 from flask_restful import Api
 from apiflask import APIFlask
 import os

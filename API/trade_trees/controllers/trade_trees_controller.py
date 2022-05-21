@@ -1,7 +1,6 @@
 from flask import request
 import flask
 from apiflask import APIBlueprint, abort
-from marshmallow import ValidationError
 from API.authentication.auth import auth
 from kink import inject
 from schema import SchemaError
