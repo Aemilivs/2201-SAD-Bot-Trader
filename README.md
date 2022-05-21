@@ -39,7 +39,6 @@ flask run --host=0.0.0.0 --port=5001
 # Access the dashboard in browser: http://127.0.0.1:5001/
 ```
 
-and running `start_gui` following that.
 
 ## Running Trading Bot
 
