@@ -16,10 +16,8 @@ class UsersController:
         blueprint = APIBlueprint('users', __name__)
 
         @blueprint.route('/api/create-user', methods=['POST'])
-        @blueprint.doc(responses=[200, 400])
-        @blueprint.output(CreateUserTradeTreeAPISchema,
-                          status_code=200)
-        @blueprint.doc(responses=[201])
+        @blueprint.doc(responses=[200, 201, 400])
+        @blueprint.input(CreateUserTradeTreeAPISchema)
         def post_new_user():
             """
             Create a new user.
