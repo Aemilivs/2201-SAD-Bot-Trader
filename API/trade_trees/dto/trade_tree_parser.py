@@ -17,8 +17,6 @@ class TradeTreeParser():
 
     def parse_args(self):
         root = self.rootParser.parse_args()
-        # TODO Parse the children hierarchy to be stored in the database.
-        # Possibly the best place to introduce UUID generation?
         child_request = FakeRequest()
         children = root['child']['children']
         root['child']['children'] = None

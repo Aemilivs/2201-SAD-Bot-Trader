@@ -6,3 +6,4 @@ class TradeTreeDiscriminator(Enum):
     OR = 2
     NOT = 3
     SCHEMA = 4
+    TIME_SERIES = 5

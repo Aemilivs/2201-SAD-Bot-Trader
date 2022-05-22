@@ -7,7 +7,7 @@ from flask_restful import reqparse, inputs
 class TradeTreeRootParser(reqparse.RequestParser):
     def __init__(self) -> None:
         reqparse.RequestParser.__init__(self)
-        self.add_argument('id', type=str, help='UUID identifying a user.')
+        self.add_argument('id', type=str, help='UUID identifying a tree root.')
         self.add_argument(
             'title',
             help='Title of the trade tree.',

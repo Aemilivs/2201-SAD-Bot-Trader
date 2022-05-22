@@ -63,3 +63,5 @@ jobs:
     - name: Test with pytest
       run: |
         PYTHONPATH=. pytest API/
+      env:
+        API_KEY: DEMO
