@@ -18,11 +18,10 @@ class UsersController:
         @blueprint.route('/api/create-user', methods=['POST'])
         @blueprint.doc(responses=[200, 201, 400])
         @blueprint.input(CreateUserTradeTreeAPISchema)
-        def post_new_user():
+        def post_new_user(payload):
             """
             Create a new user.
             """
-            payload = request.json
             try:
                 self.user_service.post_user(payload)
             except Exception as exception:
