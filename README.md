@@ -24,21 +24,36 @@ Consequent runs can be performed by executing `flask run`
 git clone --recursive https://github.com/Aemilivs/2201-SAD-Bot-Trader.git 2201-SAD-Bot-Trader && cd $_
 python3.10 -m venv venv
 source venv/bin/activate
-pip3 install -r GUI/requirements.txt
-python3.10 manage.py makemigrations
-python3.10 manage.py migrate
-python3.10 manage.py runserver
+pip3 install -r Flask-UI/requirements.txt
 ```
 
 Consequent runs can be performed by executing
 
 ```bash
+#For Unix
 cd 2201-SAD-Bot-Trader
-export DATABASE_NAME=$(readlink -f db.sqlite.3)
-alias start_gui="python3 "$(readlink -f manage.py)" runserver"
+export FLASK_APP=run.py
+
+# Start the application (development mode)
+# --host=0.0.0.0 - expose the app on all network interfaces (default 127.0.0.1)
+# --port=5001    - specify the app port (default 5000)  
+flask run --host=0.0.0.0 --port=5001
+
+# Access the dashboard in browser: http://127.0.0.1:5001/
 ```
 
-and running `start_gui` following that.
+
+## Running Trading Bot
+
+To tun the trading bot API and GUI concurrently and allow their interconnectivity on the same server. Execute the following commands:
+
+```bash
+cd 2201-SAD-Bot-Trader
+sh run.sh
+
+# GUI accessible on: http://127.0.0.1:5000
+# API accessible on: http://127.0.0.1:5001
+```
 
 ## Feature-list
 
