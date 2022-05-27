@@ -49,10 +49,23 @@ To tun the trading bot API and GUI concurrently and allow their interconnectivit
 
 ```bash
 cd 2201-SAD-Bot-Trader
+
+#setting the virtual environment
+python3.10 -m venv venv
+source venv/bin/activate
+
+#Installing the requirements for UI and API
+pip3 install -r API/requirements.txt
+pip3 install -r Flask-UI/requirements.txt
+
+#Decrypting the encrypted constants
+git secret reveal
+
+#Running both Flask apps concurrently
 sh run.sh
 
-# GUI accessible on: http://127.0.0.1:5000
-# API accessible on: http://127.0.0.1:5001
+# GUI accessible on: http://127.0.0.1:5001
+# API accessible on: http://127.0.0.1:5000
 ```
 
 ## Feature-list
