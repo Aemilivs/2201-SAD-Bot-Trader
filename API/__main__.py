@@ -17,5 +17,12 @@ app.register_blueprint(health_blueprint)
 app.register_blueprint(TradeTreesController().blueprint)
 app.register_blueprint(UsersController().blueprint)
 
+
+@app.after_request
+def add_header(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+
 if __name__ == "__main__":
     Api(app.run())
