@@ -1,4 +1,4 @@
 #!/bin/sh
 
 sh API/run.sh &
-python3 Flask-UI/run.py &
+python3.10 Flask-UI/run.py &
