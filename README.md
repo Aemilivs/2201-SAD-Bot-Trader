@@ -1,7 +1,7 @@
 # 2201-SAD-Bot-Trader
 
 This project was developed by the students of [Prague City University](https://www.praguecityuniversity.cz/)
-during the Summer Semester of 2022 as part of the "Secure Application Development" module.
+during the Spring Semester of 2022 as part of the "Secure Application Development" module.
 
 ## Running Bot Trader's API
 
@@ -60,6 +60,11 @@ pip3 install -r Flask-UI/requirements.txt
 
 #Decrypting the encrypted constants
 git secret reveal
+
+#In case your public key isn't able to decrypt the constants
+#A key can be obtained for free here: https://www.alphavantage.co/
+echo "key = 'API_KEY'" > API/trading_api/constants.py
+
 
 #Running both Flask apps concurrently
 sh run.sh
