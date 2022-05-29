@@ -22,4 +22,4 @@ Users are able to select and use decision trees that make sense out of the libra
 
 ## UI
 
-Not ready for this demo
+Users will be able to create trading trees, fetch trading trees they have created, as well as edit and delete them.
